@@ -68,7 +68,9 @@ Please see the `eco-json-schema-object` documentation for further information.
       _schemaChanged: function () {
         var schema = this.schema;
         var inputEl = this.$.input;
-
+        if (schema.required) {
+          inputEl.required = true;
+        }
         if (this._isSchemaNumber(schema.type)) {
           inputEl.type = 'number';
 
