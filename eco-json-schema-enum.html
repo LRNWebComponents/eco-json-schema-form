@@ -6,6 +6,7 @@
   <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"/>
   <link rel="import" href="../paper-menu/paper-menu.html"/>
   <link rel="import" href="../paper-item/paper-item.html"/>
+  <link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html"/>
 
   <template>
 
@@ -31,6 +32,7 @@
   <script>
     Polymer({
       is: 'eco-json-schema-enum',
+      behaviors: [Polymer.IronValidatorBehavior],
       properties: {
         schema: {
           type: Object,
@@ -52,6 +54,14 @@
       },
       detached: function () {
 
+      },
+      validate: function () {
+        if (this.value === "" || this.value === null) {
+          this.error = "Select";
+          return false;
+        }
+        this.error = "";
+        return true;
       },
       _schemaChanged: function () {
         var schema = this.schema;
