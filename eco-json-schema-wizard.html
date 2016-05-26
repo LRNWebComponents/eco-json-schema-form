@@ -296,9 +296,8 @@ el.error = {
 
     </style>
 
-    <div class="header" hidden$="[[!label]]">[[label]]</div>
-    <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name">
-    </iron-pages>
+    <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
+    <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
 
   </template>
 
@@ -372,7 +371,7 @@ el.error = {
           } else {
             return console.error('Unknown property type %s', schema.type);
           }
-          this.set('pages', key);
+          ctx.push('pages', key);
 
           return property;
         });
@@ -476,6 +475,18 @@ el.error = {
         this._setValue();
         if (this.pages.length > 0) {
           this.set('page', this.pages[0]);
+        }
+      },
+      goNext: function() {
+        var current = this.pages.indexOf(page);
+        var next = current;
+        if (current !== -1) {
+          if (current < this.pages.length-1) {
+            next = current+1;
+          }
+          this.set('page', this.pages[next]);
+        } else {
+          console.log("Invalid current page in wizard");
         }
       },
       _errorChanged: function() {
