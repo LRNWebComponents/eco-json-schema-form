@@ -4,6 +4,7 @@
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
 
 <!--
 `eco-json-schema-wizard` takes in a JSON schema of type object and builds a form,
@@ -299,34 +300,14 @@ el.error = {
 
         <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
 
-        <section>
-
-            <div class="fab blue">
+        <paper-toolbar>
                 <paper-icon-button id="prevButton" icon="icons:arrow-back" alt="{{localize('prev', 'Previous')}}" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-icon-button>
-                <paper-ripple></paper-ripple>
-            </div>
-
-            <div class="fab blue">
                 <paper-icon-button id="nextButton" icon="icons:arrow-forward" alt="{{localize('next', 'Next')}}" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-icon-button>
-                <paper-ripple></paper-ripple>
-            </div>
-
-        </section>
-
-        <section>
-
-            <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
-
-        </section>
-
-        <section>
-
-            <div class="fab green">
+                <span class="title"></span>
                 <paper-icon-button id="submitButton" icon="icons:thumb-up" alt="{{localize('submit', 'Submit')}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-icon-button>
-                <paper-ripple></paper-ripple>
-            </div>
-
-        </section>
+        </paper-toolbar>
+            <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+        </paper-toolbar>
 
     </template>
 
