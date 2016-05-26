@@ -2,6 +2,7 @@
 <link rel="import" href="../app-route/app-location.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-toolbar/paper-toolbar.html">
@@ -301,12 +302,13 @@ el.error = {
         <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
 
         <paper-toolbar>
-                <paper-icon-button id="prevButton" icon="icons:arrow-back" alt="{{localize('prev', 'Previous')}}" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-icon-button>
-                <paper-icon-button id="nextButton" icon="icons:arrow-forward" alt="{{localize('next', 'Next')}}" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-icon-button>
-                <span class="title"></span>
-                <paper-icon-button id="submitButton" icon="icons:thumb-up" alt="{{localize('submit', 'Submit')}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-icon-button>
+            <paper-icon-button id="prevButton" icon="icons:arrow-back" alt="{{localize('prev', 'Previous')}}" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-icon-button>
+            <span class="title"></span>
+            <paper-icon-button id="nextButton" icon="icons:arrow-forward" alt="{{localize('next', 'Next')}}" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-icon-button>
         </paper-toolbar>
-            <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+        <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+        <paper-toolbar>
+            <paper-button id="submitButton" alt="{{localize('submit', 'Submit')}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-button>
         </paper-toolbar>
 
     </template>
