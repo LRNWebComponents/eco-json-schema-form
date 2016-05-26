@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../paper-button/paper-button.html">
 
 <!--
 `eco-json-schema-wizard` takes in a JSON schema of type object and builds a form,
@@ -297,7 +298,10 @@ el.error = {
     </style>
 
     <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
+    <paper-button id="prevButton" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-button>
+    <paper-button id="nextButton" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-button>
     <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+    <paper-button id="submitButton" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-button>
 
   </template>
 
@@ -319,7 +323,8 @@ el.error = {
         },
         page: {
           type: String,
-          notify: true
+          notify: true,
+          observer: '_pageChanged'
         },
         pages: {
           type: Array,
@@ -329,6 +334,14 @@ el.error = {
         error: {
           type: Object,
           observer: '_errorChanged'
+        },
+        hasNext: {
+          type: Boolean,
+          notify: true
+        },
+        hasPrev: {
+          type: Boolean,
+          notify: true
         }
       },
       ready: function() {
@@ -477,7 +490,7 @@ el.error = {
           this.set('page', this.pages[0]);
         }
       },
-      goNext: function() {
+      next: function() {
         var current = this.pages.indexOf(page);
         var next = current;
         if (current !== -1) {
@@ -487,6 +500,34 @@ el.error = {
           this.set('page', this.pages[next]);
         } else {
           console.log("Invalid current page in wizard");
+        }
+      },
+      prev: function() {
+        var current = this.pages.indexOf(page);
+        var prev = current;
+        if (current !== -1) {
+          if (current > 0) {
+            prev = current-1;
+          }
+          this.set('page', this.pages[prev]);
+        } else {
+          console.log("Invalid current page in wizard");
+        }
+      },
+      submit: function() {
+        this.fire('submit');
+      },
+      _pageChanged: function() {
+        var current = this.pages.indexOf(page);
+        if (current === 0) {
+          this.set('hasPrev', false);
+        } else {
+          this.set('hasPrev', true);
+        }
+        if (current === this.pages.length) {
+          this.set('hasNext', false);
+        } else {
+          this.set('hasNext', true);
         }
       },
       _errorChanged: function() {
