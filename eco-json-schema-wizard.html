@@ -2,6 +2,8 @@
 <link rel="import" href="../app-route/app-location.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-icons/image-icons.html">
+<link rel="import" href="../iron-icons/editor-icons.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-toolbar/paper-toolbar.html">
@@ -302,6 +304,7 @@ el.error = {
 
         <paper-toolbar>
             <paper-icon-button id="prevButton" icon="icons:arrow-back" alt="{{localize('prev', 'Previous')}}" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-icon-button>
+            <paper-icon-button id="camButton" icon="editor:insert-photo" alt="{{localize('addphoto', 'Add photo')}}" raised>{{localize('addphoto', 'Add photo')}}</paper-icon-button>
             <span class="title"></span>
             <paper-icon-button id="nextButton" icon="icons:arrow-forward" alt="{{localize('next', 'Next')}}" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-icon-button>
             <paper-icon-button id="submitButton" icon="icons:cloud-upload" alt="{{localize('submit', 'Submit')}}" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-icon-button>
