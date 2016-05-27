@@ -304,7 +304,7 @@ el.error = {
             <paper-icon-button id="prevButton" icon="icons:arrow-back" alt="{{localize('prev', 'Previous')}}" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-icon-button>
             <span class="title"></span>
             <paper-icon-button id="nextButton" icon="icons:arrow-forward" alt="{{localize('next', 'Next')}}" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-icon-button>
-            <paper-icon-button id="submitButton" icon="icons:done-all" alt="{{localize('submit', 'Submit')}}" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-icon-button>
+            <paper-icon-button id="submitButton" icon="icons:cloud-upload" alt="{{localize('submit', 'Submit')}}" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-icon-button>
         </paper-toolbar>
         <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
     </template>
