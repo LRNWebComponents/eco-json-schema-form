@@ -32,7 +32,6 @@ Please see the `eco-json-schema-object` documentation for further information.
 
     <paper-input id="input"
                  value="{{value}}"
-                 charCounter="false"
                  auto-validate>
 
     </paper-input>
@@ -114,9 +113,11 @@ Please see the `eco-json-schema-object` documentation for further information.
             inputEl.type = 'text';
           }
 
-          if (schema.maxLength || schema.minLength) {
-            inputEl.charCounter = true;
-          }
+          /*
+            if (schema.maxLength || schema.minLength) {
+              inputEl.charCounter = true;
+            }
+           */
 
           if (schema.maxLength) {
             inputEl.maxlength = schema.maxLength;
@@ -136,6 +137,8 @@ Please see the `eco-json-schema-object` documentation for further information.
             inputEl[prop] = schema.component.properties[prop];
           });
         }
+
+        inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
 
         if (schema.title) {
           inputEl.label = schema.title;
