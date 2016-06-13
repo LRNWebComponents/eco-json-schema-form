@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
 `eco-json-schema-object` takes in a JSON schema of type object and builds a form,
@@ -301,7 +302,18 @@ el.error = {
   <script>
     Polymer({
       is: 'eco-json-schema-object',
+      behaviors: [
+        Polymer.AppLocalizeBehavior
+      ],
       properties: {
+        language: {
+          value: 'en'
+        },
+        resources: {
+          value: function() {
+            return {};
+          }
+        },
         schema: {
           type: Object,
           observer: '_schemaChanged'
@@ -346,6 +358,9 @@ el.error = {
             property.value = '';
           } else if (ctx._isSchemaBoolean(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-boolean';
+            property.value = false;
+          } else if (ctx._isSchemaFile(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-file';
             property.value = false;
           } else if (ctx._isSchemaValue(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-input';
@@ -434,7 +449,9 @@ el.error = {
           var el = ctx.create(property.component.name, {
             label: property.label,
             schema: property.schema,
-            schemaProperty: property
+            schemaProperty: property,
+            language: this.language,
+            resources: this.resources
           });
 
           el.setAttribute('name', property.property);
@@ -475,8 +492,15 @@ el.error = {
       _deepClone: function(o) {
         return JSON.parse(JSON.stringify(o));
       },
-      _isSchemaValue: function (type) {
-        return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type);
+      _isSchemaValue: function(type) {
+        return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type) || this._isSchemaFile(type);
+      },
+      _isSchemaFile: function(type) {
+        if (Array.isArray(type)) {
+          return type.indexOf('file') !== -1;
+        } else {
+          return type === 'file';
+        }
       },
       _isSchemaBoolean: function (type) {
         if (Array.isArray(type)) {

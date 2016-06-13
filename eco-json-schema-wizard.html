@@ -7,6 +7,7 @@
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
 `eco-json-schema-wizard` takes in a JSON schema of type object and builds a form,
@@ -284,325 +285,345 @@ el.error = {
 
 <dom-module id="eco-json-schema-wizard">
 
-    <link rel="import" href="./eco-json-schema-object.html" />
-    <link rel="import" href="./eco-json-schema-object.html" />
-    <link rel="import" href="./eco-json-schema-array.html" />
-    <link rel="import" href="./eco-json-schema-boolean.html" />
-    <link rel="import" href="./eco-json-schema-enum.html" />
-    <link rel="import" href="./eco-json-schema-input.html" />
+  <link rel="import" href="./eco-json-schema-object.html" />
+  <link rel="import" href="./eco-json-schema-object.html" />
+  <link rel="import" href="./eco-json-schema-array.html" />
+  <link rel="import" href="./eco-json-schema-boolean.html" />
+  <link rel="import" href="./eco-json-schema-enum.html" />
+  <link rel="import" href="./eco-json-schema-input.html" />
 
-    <template>
+  <template>
 
-        <style>
-            :host {
-                display: block;
-                @apply(--layout-vertical);
-            }
-        </style>
+    <style>
+      :host {
+        display: block;
+        @apply(--layout-vertical);
+      }
+    </style>
 
-        <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
+    <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
 
-        <paper-toolbar>
-            <paper-icon-button id="prevButton" icon="icons:arrow-back" alt="{{localize('prev', 'Previous')}}" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-icon-button>
-            <paper-icon-button id="camButton" icon="editor:insert-photo" alt="{{localize('addphoto', 'Add photo')}}" raised>{{localize('addphoto', 'Add photo')}}</paper-icon-button>
-            <span class="title"></span>
-            <paper-icon-button id="nextButton" icon="icons:arrow-forward" alt="{{localize('next', 'Next')}}" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-icon-button>
-            <paper-icon-button id="submitButton" icon="icons:cloud-upload" alt="{{localize('submit', 'Submit')}}" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-icon-button>
-        </paper-toolbar>
-        <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
-    </template>
+    <paper-toolbar>
+      <paper-icon-button id="prevButton" icon="icons:arrow-back" alt="{{localize('prev', 'Previous')}}" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev', 'Previous')}}</paper-icon-button>
+      <paper-icon-button id="camButton" icon="editor:insert-photo" alt="{{localize('addphoto', 'Add photo')}}" raised>{{localize('addphoto', 'Add photo')}}</paper-icon-button>
+      <span class="title"></span>
+      <paper-icon-button id="nextButton" icon="icons:arrow-forward" alt="{{localize('next', 'Next')}}" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next', 'Next')}}</paper-icon-button>
+      <paper-icon-button id="submitButton" icon="icons:cloud-upload" alt="{{localize('submit', 'Submit')}}" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit', 'Submit')}}</paper-icon-button>
+    </paper-toolbar>
+    <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+  </template>
 
-    <script>
-        Polymer({
-            is: 'eco-json-schema-wizard',
-            behaviors: [Polymer.AppLocalizeBehavior],
-            properties: {
-                schema: {
-                    type: Object,
-                    observer: '_schemaChanged'
-                },
-                label: {
-                    type: String
-                },
-                value: {
-                    type: Object,
-                    notify: true,
-                    value: function() {
-                        return {};
-                    }
-                },
-                page: {
-                    type: String,
-                    notify: true,
-                    observer: '_pageChanged'
-                },
-                pages: {
-                    type: Array,
-                    notify: true,
-                    value: []
-                },
-                error: {
-                    type: Object,
-                    observer: '_errorChanged'
-                },
-                isReview: {
-                    type: Boolean,
-                    value: false,
-                    notify: true
-                },
-                canSubmit: {
-                    type: Boolean,
-                    notify: true
-                },
-                hasNext: {
-                    type: Boolean,
-                    notify: true
-                },
-                hasPrev: {
-                    type: Boolean,
-                    notify: true
-                }
-            },
-            attached: function() {
-                this.loadResources(this.resolveUrl('../../src/locales.json'));
-            },
-            detached: function() {
-                this._clearForm();
-            },
-            _buildSchemaProperties: function() {
-                var ctx = this;
+  <script>
+    Polymer({
+      is: 'eco-json-schema-wizard',
+      behaviors: [
+        Polymer.AppLocalizeBehavior
+      ],
 
-                this._schemaProperties = Object.keys(this.schema.properties || []).map(function(key) {
-                    var schema = ctx.schema.properties[key];
-                    var property = {
-                        property: key,
-                        label: schema.title || key,
-                        schema: schema,
-                        component: schema.component || {}
-                    };
+      properties: {
+        language: {
+          value: 'en'
+        },
+        resources: {
+          value: function() {
+            return {};
+          }
+        },
+        schema: {
+          type: Object,
+          observer: '_schemaChanged'
+        },
+        label: {
+          type: String
+        },
+        value: {
+          type: Object,
+          notify: true,
+          value: function() {
+            return {};
+          }
+        },
+        page: {
+          type: String,
+          notify: true,
+          observer: '_pageChanged'
+        },
+        pages: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        error: {
+          type: Object,
+          observer: '_errorChanged'
+        },
+        isReview: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+        canSubmit: {
+          type: Boolean,
+          notify: true
+        },
+        hasNext: {
+          type: Boolean,
+          notify: true
+        },
+        hasPrev: {
+          type: Boolean,
+          notify: true
+        }
+      }
+      detached: function() {
+        this._clearForm();
+      },
+      _buildSchemaProperties: function() {
+        var ctx = this;
 
-                    if (!property.component.valueProperty) {
-                        property.component.valueProperty = 'value';
-                    }
+        this._schemaProperties = Object.keys(this.schema.properties || []).map(function(key) {
+          var schema = ctx.schema.properties[key];
+          var property = {
+            property: key,
+            label: schema.title || key,
+            schema: schema,
+            component: schema.component || {}
+          };
 
-                    if (ctx._isSchemaEnum(schema)) {
-                        property.component.name = property.component.name || 'eco-json-schema-enum';
-                        property.value = '';
-                    } else if (ctx._isSchemaBoolean(schema.type)) {
-                        property.component.name = property.component.name || 'eco-json-schema-boolean';
-                        property.value = false;
-                    } else if (ctx._isSchemaValue(schema.type)) {
-                        property.component.name = property.component.name || 'eco-json-schema-input';
-                        property.value = '';
-                    } else if (ctx._isSchemaObject(schema.type)) {
-                        property.component.name = property.component.name || 'eco-json-schema-object';
-                        property.value = {};
-                    } else if (ctx._isSchemaArray(schema.type)) {
-                        property.component.name = property.component.name || 'eco-json-schema-array';
-                        property.value = [];
-                    } else {
-                        return console.error('Unknown property type %s', schema.type);
-                    }
-                    ctx.push('pages', key);
+          if (!property.component.valueProperty) {
+            property.component.valueProperty = 'value';
+          }
 
-                    return property;
-                });
-            },
-            _schemaPropertyChanged: function(event, detail) {
+          if (ctx._isSchemaEnum(schema)) {
+            property.component.name = property.component.name || 'eco-json-schema-enum';
+            property.value = '';
+          } else if (ctx._isSchemaBoolean(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-boolean';
+            property.value = false;
+          } else if (ctx._isSchemaValue(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-input';
+            property.value = '';
+          } else if (ctx._isSchemaObject(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-object';
+            property.value = {};
+          } else if (ctx._isSchemaArray(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-array';
+            property.value = [];
+          } else if (ctx._isSchemaArray(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-array';
+            property.value = [];
+          } else {
+            return console.error('Unknown property type %s', schema.type);
+          }
+          ctx.push('pages', key);
 
-                if (detail.path && /\.length$/.test(detail.path)) {
-                    return;
-                }
-
-                var ctx = this;
-                var property = event.target.schemaProperty;
-                var path = ['value', property.property];
-
-                if (detail.path && /\.splices$/.test(detail.path)) {
-                    var parts = detail.path.split('.').slice(1, -1);
-                    while (parts.length) {
-                        path.push(parts.shift());
-                        if (property.keyMap && property.keyMap[path.join('.')]) {
-                            path = property.keyMap[path.join('.')].split('.');
-                        }
-                    }
-
-                    if (detail.value.keySplices) {
-                        if (property.keyMap) {
-                            detail.value.keySplices.forEach(function(splice) {
-                                splice.removed.forEach(function(k) {
-                                    delete property.keyMap[path.concat([k]).join('.')];
-                                });
-                            });
-                        }
-                    }
-
-                    detail.value.indexSplices.forEach(function(splice) {
-                        var args = [path.join('.'), splice.index, splice.removed.length];
-                        if (splice.addedCount) {
-                            for (var i = 0, ii = splice.addedCount; i < ii; i++) {
-                                if (splice.addedKeys && splice.addedKeys[i]) {
-                                    property.keyMap = property.keyMap || {};
-                                    property.keyMap[path.concat([splice.addedKeys[i]]).join('.')] = path.concat([i + splice.index]).join('.');
-                                }
-                                args.push(ctx._deepClone(splice.object[i + splice.index]));
-                            }
-                        }
-                        ctx.splice.apply(ctx, args);
-                    });
-                } else if (detail.path) {
-                    var parts = detail.path.split('.').slice(1);
-                    while (parts.length) {
-                        path.push(parts.shift());
-                        if (property.keyMap && property.keyMap[path.join('.')]) {
-                            path = property.keyMap[path.join('.')].split('.');
-                        }
-                    }
-                    this.set(path, this._deepClone(detail.value));
-                } else {
-                    property.value = detail.value;
-                    this.set(path, this._deepClone(detail.value));
-                }
-            },
-            _setValue: function() {
-                var ctx = this;
-                var value = {};
-                this._schemaProperties.forEach(function(property) {
-                    value[property.property] = ctx._deepClone(property.value);
-                });
-                this.value = value;
-            },
-            _buildForm: function() {
-                var ctx = this;
-                this._schemaProperties.forEach(function(property) {
-
-                    var el = ctx.create(property.component.name, {
-                        label: property.label,
-                        schema: property.schema,
-                        schemaProperty: property
-                    });
-
-                    el.setAttribute('name', property.property);
-
-                    property.value = el[property.component.valueProperty];
-                    ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
-                    Polymer.dom(ctx.$.form).appendChild(el);
-                });
-            },
-            _removePropertyEl: function(el) {
-                this.unlisten(el, el.schemaProperty.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
-                el.schemaProperty = null;
-                Polymer.dom(this.$.form).removeChild(el);
-            },
-            _clearForm: function() {
-                var formEl = Polymer.dom(this.$.form);
-                while (formEl.firstChild) {
-                    this._removePropertyEl(formEl.firstChild);
-                }
-            },
-            _schemaChanged: function() {
-                this._clearForm();
-                this._buildSchemaProperties();
-                this._buildForm();
-                this._setValue();
-                if (this.pages.length > 0) {
-                    this.set('page', this.pages[0]);
-                }
-            },
-            next: function() {
-                var current = this.pages.indexOf(this.page);
-                var next = current;
-                if (current !== -1) {
-                    if (current < this.pages.length - 1) {
-                        next = current + 1;
-                    }
-                    this.set('page', this.pages[next]);
-                } else {
-                    console.log("Invalid current page in wizard");
-                }
-            },
-            prev: function() {
-                var current = this.pages.indexOf(this.page);
-                var prev = current;
-                if (current !== -1) {
-                    if (current > 0) {
-                        prev = current - 1;
-                    }
-                    this.set('page', this.pages[prev]);
-                } else {
-                    console.log("Invalid current page in wizard");
-                }
-            },
-            submit: function() {
-                this.fire('submit');
-            },
-            _pageChanged: function() {
-                var current = this.pages.indexOf(this.page);
-                if (current === 0) {
-                    this.set('hasPrev', false);
-                } else {
-                    this.set('hasPrev', true);
-                }
-                if (current === this.pages.length - 1) {
-                    this.set('hasNext', false);
-                    this.set('canSubmit', true);
-                } else {
-                    if (this.isReview) {
-                        this.set('canSubmit', true);
-                    } else {
-                        this.set('canSubmit', false);
-                    }
-                    this.set('hasNext', true);
-                }
-            },
-            _errorChanged: function() {
-                var ctx = this;
-                Polymer.dom(this.$.form).childNodes.forEach(function(el) {
-                    var name = el.getAttribute('name');
-                    if (ctx.error && ctx.error[name]) {
-                        el.error = ctx.error[name];
-                    } else {
-                        el.error = null;
-                    }
-                });
-            },
-            _deepClone: function(o) {
-                return JSON.parse(JSON.stringify(o));
-            },
-            _isSchemaValue: function(type) {
-                return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type);
-            },
-            _isSchemaBoolean: function(type) {
-                if (Array.isArray(type)) {
-                    return type.indexOf('boolean') !== -1;
-                } else {
-                    return type === 'boolean';
-                }
-            },
-            _isSchemaEnum: function(schema) {
-                return !!schema.enum;
-            },
-            _isSchemaNumber: function(type) {
-                if (Array.isArray(type)) {
-                    return type.indexOf('number') !== -1 || type.indexOf('integer') !== -1;
-                } else {
-                    return type === 'number' || type === 'integer';
-                }
-            },
-            _isSchemaString: function(type) {
-                if (Array.isArray(type)) {
-                    return type.indexOf('string') !== -1;
-                } else {
-                    return type === 'string';
-                }
-            },
-            _isSchemaObject: function(type) {
-                return type === 'object';
-            },
-            _isSchemaArray: function(type) {
-                return type === 'array';
-            }
+          return property;
         });
-    </script>
+      },
+      _schemaPropertyChanged: function(event, detail) {
+
+        if (detail.path && /\.length$/.test(detail.path)) {
+          return;
+        }
+
+        var ctx = this;
+        var property = event.target.schemaProperty;
+        var path = ['value', property.property];
+
+        if (detail.path && /\.splices$/.test(detail.path)) {
+          var parts = detail.path.split('.').slice(1, -1);
+          while (parts.length) {
+            path.push(parts.shift());
+            if (property.keyMap && property.keyMap[path.join('.')]) {
+              path = property.keyMap[path.join('.')].split('.');
+            }
+          }
+
+          if (detail.value.keySplices) {
+            if (property.keyMap) {
+              detail.value.keySplices.forEach(function(splice) {
+                splice.removed.forEach(function(k) {
+                  delete property.keyMap[path.concat([k]).join('.')];
+                });
+              });
+            }
+          }
+
+          detail.value.indexSplices.forEach(function(splice) {
+            var args = [path.join('.'), splice.index, splice.removed.length];
+            if (splice.addedCount) {
+              for (var i = 0, ii = splice.addedCount; i < ii; i++) {
+                if (splice.addedKeys && splice.addedKeys[i]) {
+                  property.keyMap = property.keyMap || {};
+                  property.keyMap[path.concat([splice.addedKeys[i]]).join('.')] = path.concat([i + splice.index]).join('.');
+                }
+                args.push(ctx._deepClone(splice.object[i + splice.index]));
+              }
+            }
+            ctx.splice.apply(ctx, args);
+          });
+        } else if (detail.path) {
+          var parts = detail.path.split('.').slice(1);
+          while (parts.length) {
+            path.push(parts.shift());
+            if (property.keyMap && property.keyMap[path.join('.')]) {
+              path = property.keyMap[path.join('.')].split('.');
+            }
+          }
+          this.set(path, this._deepClone(detail.value));
+        } else {
+          property.value = detail.value;
+          this.set(path, this._deepClone(detail.value));
+        }
+      },
+      _setValue: function() {
+        var ctx = this;
+        var value = {};
+        this._schemaProperties.forEach(function(property) {
+          value[property.property] = ctx._deepClone(property.value);
+        });
+        this.value = value;
+      },
+      _buildForm: function() {
+        var ctx = this;
+        this._schemaProperties.forEach(function(property) {
+
+          var el = ctx.create(property.component.name, {
+            label: property.label,
+            schema: property.schema,
+            schemaProperty: property,
+            language: this.language,
+            resources: this.resources
+          });
+
+          el.setAttribute('name', property.property);
+
+          property.value = el[property.component.valueProperty];
+          ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
+          Polymer.dom(ctx.$.form).appendChild(el);
+        });
+      },
+      _removePropertyEl: function(el) {
+        this.unlisten(el, el.schemaProperty.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
+        el.schemaProperty = null;
+        Polymer.dom(this.$.form).removeChild(el);
+      },
+      _clearForm: function() {
+        var formEl = Polymer.dom(this.$.form);
+        while (formEl.firstChild) {
+          this._removePropertyEl(formEl.firstChild);
+        }
+      },
+      _schemaChanged: function() {
+        this._clearForm();
+        this._buildSchemaProperties();
+        this._buildForm();
+        this._setValue();
+        if (this.pages.length > 0) {
+          this.set('page', this.pages[0]);
+        }
+      },
+      next: function() {
+        var current = this.pages.indexOf(this.page);
+        var next = current;
+        if (current !== -1) {
+          if (current < this.pages.length - 1) {
+            next = current + 1;
+          }
+          this.set('page', this.pages[next]);
+        } else {
+          console.log("Invalid current page in wizard");
+        }
+      },
+      prev: function() {
+        var current = this.pages.indexOf(this.page);
+        var prev = current;
+        if (current !== -1) {
+          if (current > 0) {
+            prev = current - 1;
+          }
+          this.set('page', this.pages[prev]);
+        } else {
+          console.log("Invalid current page in wizard");
+        }
+      },
+      submit: function() {
+        this.fire('submit');
+      },
+      _pageChanged: function() {
+        var current = this.pages.indexOf(this.page);
+        if (current === 0) {
+          this.set('hasPrev', false);
+        } else {
+          this.set('hasPrev', true);
+        }
+        if (current === this.pages.length - 1) {
+          this.set('hasNext', false);
+          this.set('canSubmit', true);
+        } else {
+          if (this.isReview) {
+            this.set('canSubmit', true);
+          } else {
+            this.set('canSubmit', false);
+          }
+          this.set('hasNext', true);
+        }
+      },
+      _errorChanged: function() {
+        var ctx = this;
+        Polymer.dom(this.$.form).childNodes.forEach(function(el) {
+          var name = el.getAttribute('name');
+          if (ctx.error && ctx.error[name]) {
+            el.error = ctx.error[name];
+          } else {
+            el.error = null;
+          }
+        });
+      },
+      _deepClone: function(o) {
+        return JSON.parse(JSON.stringify(o));
+      },
+      _isSchemaValue: function(type) {
+        return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type) || this._isSchemaFile(type);
+      },
+      _isSchemaFile: function(type) {
+        if (Array.isArray(type)) {
+          return type.indexOf('file') !== -1;
+        } else {
+          return type === 'file';
+        }
+      },
+      _isSchemaBoolean: function(type) {
+        if (Array.isArray(type)) {
+          return type.indexOf('boolean') !== -1;
+        } else {
+          return type === 'boolean';
+        }
+      },
+      _isSchemaEnum: function(schema) {
+        return !!schema.enum;
+      },
+      _isSchemaNumber: function(type) {
+        if (Array.isArray(type)) {
+          return type.indexOf('number') !== -1 || type.indexOf('integer') !== -1;
+        } else {
+          return type === 'number' || type === 'integer';
+        }
+      },
+      _isSchemaString: function(type) {
+        if (Array.isArray(type)) {
+          return type.indexOf('string') !== -1;
+        } else {
+          return type === 'string';
+        }
+      },
+      _isSchemaObject: function(type) {
+        return type === 'object';
+      },
+      _isSchemaArray: function(type) {
+        return type === 'array';
+      }
+    });
+  </script>
 
 </dom-module>

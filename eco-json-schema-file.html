@@ -1,9 +1,9 @@
-<link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
-`eco-json-schema-input` takes in a JSON schema of type number and string and
+`eco-json-schema-file` takes in a JSON schema of type number and string and
 contains a `paper-input`, exposing a `value` property that represents the schema.
 
 Validation is handled for strings and number/integers by mapping JSON schema
@@ -13,39 +13,39 @@ try and validate themselves as users provide input:
 Please see the `eco-json-schema-object` documentation for further information.
 
 @group eco Elements
-@element eco-json-schema-input
+@element eco-json-schema-file
 @demo demo/index.html
 -->
 
-<dom-module id="eco-json-schema-input">
+<dom-module id="eco-json-schema-file">
 
-  <link rel="import" href="../paper-input/paper-input.html"/>
+  <link rel="import" href="../paper-input/paper-input.html" />
 
   <template>
 
     <style>
-
       :host {
         display: block;
-
         --paper-input-container-label-floating: {
           font-size: 22px;
-        };
+        }
+        ;
       }
+
       :host::
     </style>
 
-    <paper-input id="input"
-                 value="{{value}}"
-                 auto-validate>
+    <paper-input id="input" value="{{value}}" auto-validate>
 
     </paper-input>
+    <paper-input-image no-image-text="Click to select an image">
+    </paper-input-image>
 
   </template>
 
   <script>
     Polymer({
-      is: 'eco-json-schema-input',
+      is: 'eco-json-schema-file',
       behaviors: [
         Polymer.AppLocalizeBehavior
       ],
@@ -66,7 +66,7 @@ Please see the `eco-json-schema-object` documentation for further information.
         value: {
           type: String,
           notify: true,
-          value: function () {
+          value: function() {
             return '';
           }
         },
@@ -76,13 +76,13 @@ Please see the `eco-json-schema-object` documentation for further information.
           value: null
         }
       },
-      ready: function () {
+      ready: function() {
 
       },
-      detached: function () {
+      detached: function() {
 
       },
-      _schemaChanged: function () {
+      _schemaChanged: function() {
         var schema = this.schema;
         var inputEl = this.$.input;
         if (schema.required) {
@@ -170,10 +170,10 @@ Please see the `eco-json-schema-object` documentation for further information.
           this.$.input.errorMessage = null;
         }
       },
-      _isSchemaValue: function (type) {
+      _isSchemaValue: function(type) {
         return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type);
       },
-      _isSchemaBoolean: function (type) {
+      _isSchemaBoolean: function(type) {
         if (Array.isArray(type)) {
           return type.indexOf('boolean') !== -1;
         } else {
@@ -187,17 +187,17 @@ Please see the `eco-json-schema-object` documentation for further information.
           return type === 'number' || type === 'integer';
         }
       },
-      _isSchemaString: function (type) {
+      _isSchemaString: function(type) {
         if (Array.isArray(type)) {
           return type.indexOf('string') !== -1;
         } else {
           return type === 'string';
         }
       },
-      _isSchemaObject: function (type) {
+      _isSchemaObject: function(type) {
         return type === 'object';
       },
-      _isSchemaArray: function (type) {
+      _isSchemaArray: function(type) {
         return type === 'array';
       }
     });
