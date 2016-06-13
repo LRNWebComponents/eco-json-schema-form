@@ -22,6 +22,7 @@ Please see the `eco-json-schema-object` documentation for further information.
   <link rel="import" href="./eco-json-schema-enum.html"/>
   <link rel="import" href="./eco-json-schema-input.html"/>
   <link rel="import" href="./eco-json-schema-object.html"/>
+  <link rel="import" href="./eco-json-schema-file.html"/>
 
   <template>
 
@@ -240,7 +241,14 @@ Please see the `eco-json-schema-object` documentation for further information.
         return JSON.parse(JSON.stringify(o));
       },
       _isSchemaValue: function (type) {
-        return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type);
+        return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type) || this._isSchemaFile(type);
+      },
+      _isSchemaFile: function(type) {
+        if (Array.isArray(type)) {
+          return type.indexOf('file') !== -1;
+        } else {
+          return type === 'file';
+        }
       },
       _isSchemaBoolean: function (type) {
         if (Array.isArray(type)) {
