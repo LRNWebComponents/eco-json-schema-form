@@ -88,66 +88,7 @@ Please see the `eco-json-schema-object` documentation for further information.
         if (schema.required) {
           inputEl.required = true;
         }
-        if (this._isSchemaNumber(schema.type)) {
-          inputEl.type = 'number';
-
-          if (schema.multipleOf) {
-            inputEl.step = schema.multipleOf;
-          }
-
-          if (!isNaN(schema.maximum)) {
-            if (schema.exclusiveMaximum) {
-              inputEl.max = schema.maximum - (schema.multipleOf || 1);
-            } else {
-              inputEl.max = schema.maximum;
-            }
-          }
-
-          if (!isNaN(schema.minimum)) {
-            if (schema.exclusiveMinimum) {
-              inputEl.min = schema.minimum + (schema.multipleOf || 1);
-            } else {
-              inputEl.min = schema.minimum;
-            }
-          }
-        }
-
-        if (this._isSchemaString(schema.type)) {
-          if (schema.format === 'date-time') {
-            inputEl.type = 'datetime-local';
-            inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
-          } else if (schema.format === 'email') {
-            inputEl.type = 'email';
-          } else if (schema.format === 'hostname') {
-            inputEl.type = 'text';
-          } else if (schema.format === 'ipv4') {
-            inputEl.type = 'text';
-          } else if (schema.format === 'ipv6') {
-            inputEl.type = 'text';
-          } else if (schema.format === 'uri') {
-            inputEl.type = 'url';
-          } else {
-            inputEl.type = 'text';
-          }
-
-          /*
-            if (schema.maxLength || schema.minLength) {
-              inputEl.charCounter = true;
-            }
-           */
-
-          if (schema.maxLength) {
-            inputEl.maxlength = schema.maxLength;
-          }
-
-          if (schema.minLength) {
-            inputEl.minlength = schema.minLength;
-          }
-
-          if (schema.pattern) {
-            inputEl.pattern = schema.pattern;
-          }
-        }
+        inputEl.type = 'file';
 
         if (schema.component && schema.component.properties) {
           Object.keys(schema.component.properties).forEach(function(prop) {
@@ -155,11 +96,13 @@ Please see the `eco-json-schema-object` documentation for further information.
           });
         }
 
+        /*
         inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
 
         if (schema.title) {
           inputEl.label = schema.title;
         }
+        */
       },
       _errorChanged: function() {
         if (this.error) {
@@ -171,7 +114,14 @@ Please see the `eco-json-schema-object` documentation for further information.
         }
       },
       _isSchemaValue: function(type) {
-        return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type);
+        return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type) || this._isSchemaFile(type);
+      },
+      _isSchemaFile: function(type) {
+        if (Array.isArray(type)) {
+          return type.indexOf('file') !== -1;
+        } else {
+          return type === 'file';
+        }
       },
       _isSchemaBoolean: function(type) {
         if (Array.isArray(type)) {
