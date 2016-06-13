@@ -490,10 +490,7 @@ el.error = {
         });
       },
       _deepClone: function(o) {
-        if (o !== undefined) {
-          return JSON.parse(JSON.stringify(o));
-        }
-        return {};
+        return JSON.parse(JSON.stringify(o));
       },
       _isSchemaValue: function(type) {
         return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type) || this._isSchemaFile(type);
