@@ -361,7 +361,7 @@ el.error = {
             property.value = false;
           } else if (ctx._isSchemaFile(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-file';
-            property.value = false;
+            property.value = '';
           } else if (ctx._isSchemaValue(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-input';
             property.value = '';
