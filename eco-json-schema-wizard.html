@@ -399,15 +399,15 @@ el.error = {
           } else if (ctx._isSchemaBoolean(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-boolean';
             property.value = false;
+          } else if (ctx._isSchemaFile(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-file';
+            property.value = '';
           } else if (ctx._isSchemaValue(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-input';
             property.value = '';
           } else if (ctx._isSchemaObject(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-object';
             property.value = {};
-          } else if (ctx._isSchemaArray(schema.type)) {
-            property.component.name = property.component.name || 'eco-json-schema-array';
-            property.value = [];
           } else if (ctx._isSchemaArray(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-array';
             property.value = [];
