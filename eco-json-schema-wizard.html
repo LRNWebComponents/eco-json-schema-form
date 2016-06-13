@@ -375,6 +375,9 @@ el.error = {
           notify: true
         }
       },
+      attached: function() {
+        this.loadResources(this.resolveUrl('../../src/locales.json'));
+      },
       detached: function() {
         this._clearForm();
       },
