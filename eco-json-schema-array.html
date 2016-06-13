@@ -219,7 +219,7 @@ Please see the `eco-json-schema-object` documentation for further information.
             item.component.name = 'eco-json-schema-enum';
           } else if (this._isSchemaBoolean(schema.type)) {
             item.component.name = 'eco-json-schema-boolean';
-          } else if (ctx._isSchemaFile(schema.type)) {
+          } else if (this._isSchemaFile(schema.type)) {
             item.component.name = 'eco-json-schema-file';
           } else if (this._isSchemaValue(schema.type)) {
             item.component.name = 'eco-json-schema-input';
