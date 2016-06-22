@@ -17,6 +17,10 @@ See the [component page](http://ecoutu.github.io/eco-json-schema-form) for more 
 
 ## Supported
 
+### wizard:
+
+Including eco-json-schema-wizard.html the first level objects will be treated as wizard pages, with a Next and Previous buttons
+
 ### type: number
 
 - [x] multipleOf
