@@ -1,6 +1,6 @@
 {
   "name": "eco-json-schema-form",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "Polymer 1.0 JSON Schema form builder",
   "main": "index.js",
   "scripts": {
