@@ -285,7 +285,6 @@ el.error = {
 <dom-module id="eco-json-schema-wizard">
 
   <link rel="import" href="./eco-json-schema-object.html" />
-  <link rel="import" href="./eco-json-schema-object.html" />
   <link rel="import" href="./eco-json-schema-array.html" />
   <link rel="import" href="./eco-json-schema-boolean.html" />
   <link rel="import" href="./eco-json-schema-enum.html" />
@@ -322,7 +321,12 @@ el.error = {
 
       properties: {
         language: {
-          value: 'es'
+          type: String,
+          notify: true
+        },
+        resources: {
+          type: Object,
+          notify: true
         },
         schema: {
           type: Object,
@@ -369,9 +373,6 @@ el.error = {
           type: Boolean,
           notify: true
         }
-      },
-      attached: function() {
-        this.loadResources(this.resolveUrl('../../src/locales.json'));
       },
       detached: function() {
         this._clearForm();
