@@ -5,12 +5,23 @@
 
   <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"/>
   <link rel="import" href="../paper-menu/paper-menu.html"/>
-  <link rel="import" href="../hira-paper-item/hira-paper-item.html"/>
+  <link rel="import" href="../paper-item/paper-item.html"/>
   <link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html"/>
 
   <template>
 
     <style>
+      paper-dropdown-menu.custom {
+        --paper-input-container-label: {
+          font-size: 22px;
+          white-space: normal;
+        };
+        --paper-input-container-input: {
+          font-size: 22px;
+          white-space: normal;
+        };
+      }
+
 
       :host {
         display: block;
@@ -21,7 +32,7 @@
           white-space: normal;
         };
 
-        --hira-paper-item-body: {
+        --paper-item-body: {
           font-size: 22px;
           white-space: normal;
         };
@@ -33,10 +44,10 @@
       }
     </style>
 
-    <paper-dropdown-menu id="dropdown" class="flex" value="{{value}}">
+    <paper-dropdown-menu id="dropdown" class="flex custom" value="{{value}}">
       <paper-menu class="dropdown-content">
         <template is="dom-repeat" items="[[_items]]">
-          <hira-paper-item label="[[item]]">[[item]]</hira-paper-item>
+          <paper-item label="[[item]]">[[item]]</paper-item>
         </template>
       </paper-menu>
     </paper-dropdown-menu>
