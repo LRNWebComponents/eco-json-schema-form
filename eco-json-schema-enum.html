@@ -5,7 +5,7 @@
 
   <link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html"/>
   <link rel="import" href="../paper-menu/paper-menu.html"/>
-  <link rel="import" href="../paper-item/paper-item.html"/>
+  <link rel="import" href="../hira-paper-item/hira-paper-item.html"/>
   <link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html"/>
 
   <template>
@@ -15,17 +15,28 @@
       :host {
         display: block;
         @apply(--layout-horizontal);
-      }
 
-      :host ::content > label {
-        font-size: 22px;
+        --paper-input-container-label: {
+          font-size: 22px;
+          white-space: normal;
+        };
+
+        --hira-paper-item-body: {
+          font-size: 22px;
+          white-space: normal;
+        };
+
+        --paper-dropdown-menu-input: {
+          font-size: 22px;
+          white-space: normal;
+        };
       }
     </style>
 
     <paper-dropdown-menu id="dropdown" class="flex" value="{{value}}">
       <paper-menu class="dropdown-content">
         <template is="dom-repeat" items="[[_items]]">
-          <paper-item label="[[item]]">[[item]]</paper-item>
+          <hira-paper-item label="[[item]]">[[item]]</hira-paper-item>
         </template>
       </paper-menu>
     </paper-dropdown-menu>
