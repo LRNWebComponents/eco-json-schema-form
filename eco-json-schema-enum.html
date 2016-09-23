@@ -9,38 +9,24 @@
   <link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html"/>
 
   <template>
-
-    <style>
-      paper-dropdown-menu.custom {
+    <style is="custom-style">
+      paper-input {
         --paper-input-container-label: {
-          font-size: 22px;
           white-space: normal;
-        };
-        --paper-input-container-input: {
+          position: static;
           font-size: 22px;
-          white-space: normal;
-        };
-      }
+        }
+      };
 
-
-      :host {
-        display: block;
-        @apply(--layout-horizontal);
-
+      paper-dropdown-menu {
         --paper-input-container-label: {
-          font-size: 22px;
           white-space: normal;
-        };
-
-        --paper-item-body: {
+          position: static;
           font-size: 22px;
-          white-space: normal;
-        };
-
-        --paper-dropdown-menu-input: {
-          font-size: 22px;
-          white-space: normal;
-        };
+        }
+        --paper-dropdown-menu-button: {
+          padding: 8px;
+        }
       }
     </style>
 

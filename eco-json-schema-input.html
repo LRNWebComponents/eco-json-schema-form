@@ -20,22 +20,21 @@ Please see the `eco-json-schema-object` documentation for further information.
 <dom-module id="eco-json-schema-input">
 
   <link rel="import" href="../paper-input/paper-input.html"/>
+  <link rel="import" href="../paper-styles/typography.html"/>
 
   <template>
-
-    <style>
-
-      :host {
-        display: block;
-
-        --paper-input-container-label-floating: {
+    <style is="custom-style">
+      paper-input {
+        --paper-input-container-label: {
+          white-space: normal;
+          position: static;
           font-size: 22px;
-        };
+        }
       }
-      
     </style>
 
     <paper-input id="input"
+                 class="custom"
                  value="{{value}}"
                  auto-validate>
 

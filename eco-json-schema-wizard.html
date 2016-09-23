@@ -297,19 +297,70 @@ el.error = {
       :host {
         display: block;
         @apply(--layout-vertical);
+        @apply(--layout-horizontal);
+
+        --calculated-font-size: var(--eco-json-schema-font-font-size, 22px);
+        --calculated-white-space: var(--eco-json-schema-white-space, normal);
+        --calculated-position: var(--eco-json-schema-position, static);
+
+        --paper-font-common-nowrap: {
+          var(--calculated-font-size);
+          var(--calculated-white-space);
+          var(--calculated-position);
+        };
       }
+      --paper-font-common-nowrap: {
+          var(--calculated-font-size);
+          var(--calculated-white-space);
+          var(--calculated-position);
+        };
+      /*:root {
+
+        --paper-input-container-input: {
+          font-size: 24px;
+        };
+        --paper-input-container-label: {
+          var(--calculated-font-size);
+          var(--calculated-white-space);
+          var(--calculated-position);
+        };
+
+        --eco-json-schema-common-base: {
+          var(--calculated-font-size);
+          var(--calculated-white-space);
+          var(--calculated-position);
+        };
+        --paper-font-common-nowrap: {
+            var(--calculated-font-size);
+            var(--calculated-white-space);
+            var(--calculated-position);
+          };
+      }*/
+      --paper-input-container-label: {
+        var(--calculated-font-size);
+        var(--calculated-white-space);
+        var(--calculated-position);
+      };
+
+      --eco-json-schema-common-base: {
+        var(--calculated-font-size);
+        var(--calculated-white-space);
+        var(--calculated-position);
+      };
     </style>
 
     <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
 
-    <paper-toolbar>
-      <paper-icon-button id="prevButton" icon="icons:arrow-back" hidden$="{{!hasPrev}}" on-tap="prev" raised>prev</paper-icon-button>
-      <!--paper-icon-button id="camButton" icon="editor:insert-photo" raised>add photo</paper-icon-button-->
-      <span class="title"></span>
-      <paper-icon-button id="nextButton" icon="icons:arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>next</paper-icon-button>
-      <paper-icon-button id="submitButton" icon="icons:cloud-upload" hidden$="{{!canSubmit}}" on-tap="submit" raised>submit</paper-icon-button>
-    </paper-toolbar>
-    <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+    <div>
+      <paper-toolbar>
+        <paper-icon-button id="prevButton" icon="icons:arrow-back" hidden$="{{!hasPrev}}" on-tap="prev" raised>prev</paper-icon-button>
+        <!--paper-icon-button id="camButton" icon="editor:insert-photo" raised>add photo</paper-icon-button-->
+        <span class="title" style="white-space: normal;">[[title]]</span>
+        <paper-icon-button id="nextButton" icon="icons:arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>next</paper-icon-button>
+        <paper-icon-button id="submitButton" icon="icons:cloud-upload" hidden$="{{!canSubmit}}" on-tap="submit" raised>submit</paper-icon-button>
+      </paper-toolbar>
+      <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+     </div>
   </template>
 
   <script>
@@ -372,6 +423,16 @@ el.error = {
         hasPrev: {
           type: Boolean,
           notify: true
+        },
+        titles: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        title: {
+          type: String,
+          value: "",
+          notify: true
         }
       },
       detached: function() {
@@ -407,6 +468,7 @@ el.error = {
             property.value = '';
           } else if (ctx._isSchemaObject(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-object';
+            property.component.wizard = true;
             property.value = {};
           } else if (ctx._isSchemaArray(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-array';
@@ -415,6 +477,7 @@ el.error = {
             return console.error('Unknown property type %s', schema.type);
           }
           ctx.push('pages', key);
+          ctx.push('titles', schema.title);
 
           return property;
         });
@@ -521,6 +584,7 @@ el.error = {
         if (this.pages.length > 0) {
           this.set('page', this.pages[0]);
         }
+        this.set('title', this.titles[0]);
       },
       next: function() {
         var current = this.pages.indexOf(this.page);
@@ -530,6 +594,7 @@ el.error = {
             next = current + 1;
           }
           this.set('page', this.pages[next]);
+          this.set('title', this.titles[next]);
         } else {
           console.log("Invalid current page in wizard");
         }
@@ -542,6 +607,7 @@ el.error = {
             prev = current - 1;
           }
           this.set('page', this.pages[prev]);
+          this.set('title', this.titles[prev]);
         } else {
           console.log("Invalid current page in wizard");
         }

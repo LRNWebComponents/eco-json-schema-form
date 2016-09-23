@@ -295,7 +295,9 @@ el.error = {
 
     </style>
 
-    <div class="header" hidden$="[[!label]]">[[label]]</div>
+    <template is="dom-if" if={{!wizard}}>
+      <div class="header" hidden$="[[!label]]">[[label]]</div>
+    </template>
     <div id="form"></div>
 
   </template>
