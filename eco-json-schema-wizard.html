@@ -293,63 +293,23 @@ el.error = {
 
   <template>
 
-    <style>
+    <style is="custom-style">
       :host {
         display: block;
         @apply(--layout-vertical);
         @apply(--layout-horizontal);
-
-        --calculated-font-size: var(--eco-json-schema-font-font-size, 22px);
-        --calculated-white-space: var(--eco-json-schema-white-space, normal);
-        --calculated-position: var(--eco-json-schema-position, static);
-
-        --paper-font-common-nowrap: {
-          var(--calculated-font-size);
-          var(--calculated-white-space);
-          var(--calculated-position);
-        };
       }
-      --paper-font-common-nowrap: {
-          var(--calculated-font-size);
-          var(--calculated-white-space);
-          var(--calculated-position);
-        };
-      /*:root {
+      paper-input {
+        padding: 2px;
 
-        --paper-input-container-input: {
-          font-size: 24px;
-        };
         --paper-input-container-label: {
-          var(--calculated-font-size);
-          var(--calculated-white-space);
-          var(--calculated-position);
-        };
-
-        --eco-json-schema-common-base: {
-          var(--calculated-font-size);
-          var(--calculated-white-space);
-          var(--calculated-position);
-        };
-        --paper-font-common-nowrap: {
-            var(--calculated-font-size);
-            var(--calculated-white-space);
-            var(--calculated-position);
-          };
-      }*/
-      --paper-input-container-label: {
-        var(--calculated-font-size);
-        var(--calculated-white-space);
-        var(--calculated-position);
-      };
-
-      --eco-json-schema-common-base: {
-        var(--calculated-font-size);
-        var(--calculated-white-space);
-        var(--calculated-position);
-      };
+          white-space: normal;
+          position: static;
+          font-size: 22px;
+          color: #212121;
+        }
+      }
     </style>
-
-    <!-- <div class="header" hidden$="[[!label]]">[[label]]</div> -->
 
     <div>
       <paper-toolbar>

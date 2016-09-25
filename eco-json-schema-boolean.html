@@ -1,34 +1,19 @@
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
 
 <dom-module id="eco-json-schema-boolean">
 
   <link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
 
   <template>
-
-    <style>
-
-      :host {
+    <style is="custom-style">
+      paper-checkbox {
+        color: #737373;
+        padding: 10px 3px;
         display: block;
-
-        --paper-checkbox-label: {
-          font-size: 22px;
-          @apply(--eco-json-schema-common-base);
-        };
-
-        --paper-checkbox-size: 22px;
-      }
-
-      paper-checkbox.custom {
-        --paper-checkbox-label: {
-          font-size: 22px;
-          @apply(--eco-json-schema-common-base);
-        };
-
-        --paper-checkbox-size: 22px;
-      }
-
+        font-size: 22px;
+        white-space: normal;
+    }
     </style>
 
     <paper-checkbox

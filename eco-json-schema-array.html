@@ -1,5 +1,5 @@
 <link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html"/>
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
 
 <!--
 `eco-json-schema-array` takes in a JSON schema of type array and builds a form,
@@ -25,6 +25,18 @@ Please see the `eco-json-schema-object` documentation for further information.
   <link rel="import" href="./eco-json-schema-file.html"/>
 
   <template>
+    <style is="custom-style">
+      paper-input {
+        padding: 2px;
+
+        --paper-input-container-label: {
+          white-space: normal;
+          position: static;
+          font-size: 22px;
+          color: #212121;
+        }
+      }
+    </style>
 
     <style>
 
@@ -32,15 +44,21 @@ Please see the `eco-json-schema-object` documentation for further information.
         display: block;
         @apply(- -layout-vertical);
       }
+      :host .header {
+          white-space: normal;
+          position: static;
+          font-size: 22px;
+          color: #212121;
+      }
 
     </style>
 
-    <div class="horizontal center layout">
+    <div class="horizontal center flex layout">
       <div class="flex header" hidden$="[[!label]]">[[label]]</div>
       <paper-icon-button icon="add" on-click="_onAddItem"></paper-icon-button>
     </div>
 
-    <div id="form"></div>
+    <div id="form" class="horizontal center flex layout"></div>
 
   </template>
 
