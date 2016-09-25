@@ -64,8 +64,11 @@
             notify: true
           },
           resources: {
-            type: Object,
-            notify: true
+            value: function() {
+              return {
+                'en': { 'prev': 'Previous','next':'Next','submit':'Submit','add-image':'Click to select an image' },
+                'es': { 'prev': 'Anterior','next':'Siguiente','submit':'Enviar','add-image':'Click para adicionar una imagen' }
+              }
           },
           schema: {
             type: Object,
