@@ -1,5 +1,5 @@
 <link rel="import" href="../polymer/polymer.html" />
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html" />
 <link rel="import" href="../iron-pages/iron-pages.html">
 <link rel="import" href="../iron-icons/image-icons.html">
 <link rel="import" href="../iron-icons/editor-icons.html">
@@ -293,7 +293,7 @@ el.error = {
 
   <template>
 
-    <style is="custom-style">
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
       :host {
         display: block;
         @apply(--layout-vertical);
@@ -319,7 +319,7 @@ el.error = {
         <paper-icon-button id="nextButton" icon="icons:arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
         <paper-icon-button id="submitButton" icon="icons:cloud-upload" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
       </paper-toolbar>
-      <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+      <iron-pages id="form" class="layout horizontal wrap" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
      </div>
   </template>
 
@@ -519,6 +519,7 @@ el.error = {
           });
 
           el.setAttribute('name', property.property);
+          el.className = 'layout horizontal wrap';
 
           property.value = el[property.component.valueProperty];
           ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
