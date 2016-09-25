@@ -4,6 +4,8 @@ var demoSchema = {
     "type": "object",
     "properties": {
         "basic-input": {
+            "title": "Basic input page",
+            "type": "object",
             "properties": {
                 "branch": {
                     "title": "Branch",
@@ -64,6 +66,8 @@ var demoSchema = {
             }
         },
         "arrays": {
+            "title": "Basic arrays page",
+            "type": "object",
             "properties": {
                 "phoneNumbers": {
                     "title": "Phone numbers",
@@ -122,6 +126,8 @@ var demoSchema = {
             }
         },
         "object": {
+            "title": "Basic object page",
+            "type": "object",
             "properties": {
                 "hoursOfOperation": {
                     "title": "Hours of operation",

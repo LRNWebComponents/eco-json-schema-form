@@ -1,6 +1,9 @@
 <link rel="import" href="../../polymer/polymer.html"/>
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html"/>
 
+<script src="../../ace-builds/src/ace.js"></script>
+<link href="../../jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
+<script src="../../jsoneditor/dist/jsoneditor.min.js"></script>
 <script src="schema.js"></script>
 
 <dom-module id="eco-json-schema-form-live-schema-demo">
@@ -39,7 +42,7 @@
 
       <paper-material class="flex-2">
         <h3>Generated Form</h3>
-        <eco-json-schema-object id="schemaObj" schema="[[schema]]" value="{{value}}"></eco-json-schema-object>
+        <eco-json-schema-wizard language="[[language]]" resources="[[resources]]" id="schemaObj" on-submit="submit" page="{{page}}" pages="{{pages}}" schema="[[schema]]" value="{{value}}"></eco-json-schema-wizard>
       </paper-material>
 
       <paper-material class="flex">
@@ -55,6 +58,36 @@
       observers: [
         '_valueChanged(value.*)'
       ],
+        properties: {
+          language: {
+            value: 'en',
+            notify: true
+          },
+          resources: {
+            type: Object,
+            notify: true
+          },
+          schema: {
+            type: Object,
+            notify: true,
+            value: {
+              'schema': {}
+            }
+          },
+          value: {
+            type: Object,
+            notify: true,
+            value: {}
+          },
+          page: {
+            type: Object,
+            notify: true,
+          },
+          pages: {
+            type: Object,
+            notify: true,
+          }
+        },
       ready: function () {
 
         this._schema = demoSchema;
