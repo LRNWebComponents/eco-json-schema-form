@@ -38,7 +38,7 @@ Please see the `eco-json-schema-object` documentation for further information.
     <paper-input id="input" value="{{value}}" auto-validate>
 
     </paper-input>
-    <paper-input-image no-image-text="Click to select an image">
+    <paper-input-image no-image-text="{{localize('add-image')}}">
     </paper-input-image>
 
   </template>
@@ -52,12 +52,14 @@ Please see the `eco-json-schema-object` documentation for further information.
 
       properties: {
         language: {
-          value: 'en'
+          value: 'en',
+          notify: true
         },
         resources: {
           value: function() {
             return {};
-          }
+          },
+          notify: true
         },
         schema: {
           type: Object,
