@@ -297,11 +297,10 @@ el.error = {
       :host {
         display: block;
         @apply(--layout-vertical);
-        @apply(--layout-horizontal);
       }
     </style>
 
-    <div class="layout horizontal wrap">
+    <div class="layout vertical nowrap">
       <paper-toolbar>
         <paper-icon-button id="prevButton" icon="icons:arrow-back" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev')}}</paper-icon-button>
         <!--paper-icon-button id="camButton" icon="editor:insert-photo" raised>add photo</paper-icon-button-->
@@ -309,7 +308,7 @@ el.error = {
         <paper-icon-button id="nextButton" icon="icons:arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
         <paper-icon-button id="submitButton" icon="icons:cloud-upload" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
       </paper-toolbar>
-      <iron-pages id="form" class="layout horizontal wrap" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+      <iron-pages id="form" class="layout vertical nowrap" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
      </div>
   </template>
 
