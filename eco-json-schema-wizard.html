@@ -308,7 +308,7 @@ el.error = {
         <paper-icon-button id="nextButton" icon="icons:arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
         <paper-icon-button id="submitButton" icon="icons:cloud-upload" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
       </paper-toolbar>
-      <iron-pages id="form" class="layout vertical nowrap" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+      <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
      </div>
   </template>
 
