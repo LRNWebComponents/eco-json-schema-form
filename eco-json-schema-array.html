@@ -53,7 +53,14 @@ Please see the `eco-json-schema-object` documentation for further information.
     <style>
       :host {
         display: block;
-        @apply(--layout-vertical);
+
+        .label {
+          @apply(--paper-input-container-label);
+          white-space: normal;
+          position: static;
+          font-size: 22px;
+          color: #212121;
+        }
       }
     </style>
 
