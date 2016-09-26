@@ -47,12 +47,15 @@ Please see the `eco-json-schema-object` documentation for further information.
         -ms-flex-align: center;
         -webkit-align-items: center;
         align-items: center;
+      }
+
+      .label {
         @apply(--paper-input-container-label);
       }
     </style>
 
     <div class="box">
-      <div class="layout start-aligned" hidden$="[[!label]]">[[label]]</div><paper-icon-button class="layout end-aligned" icon="add" on-click="_onAddItem"></paper-icon-button>
+      <div class="label layout start-aligned" hidden$="[[!label]]">[[label]]</div><paper-icon-button class="layout end-aligned" icon="add" on-click="_onAddItem"></paper-icon-button>
     </div>
 
     <div id="form" class="vertical center flex layout"></div>
