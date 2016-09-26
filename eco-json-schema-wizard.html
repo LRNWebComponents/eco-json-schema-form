@@ -299,16 +299,6 @@ el.error = {
         @apply(--layout-vertical);
         @apply(--layout-horizontal);
       }
-      paper-input {
-        padding: 2px;
-
-        --paper-input-container-label: {
-          white-space: normal;
-          position: static;
-          font-size: 22px;
-          color: #212121;
-        }
-      }
     </style>
 
     <div>
@@ -519,7 +509,7 @@ el.error = {
           });
 
           el.setAttribute('name', property.property);
-          el.className = 'layout horizontal wrap';
+          el.className = 'layout horizontal nowrap flex-auto';
 
           property.value = el[property.component.valueProperty];
           ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
