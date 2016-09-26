@@ -290,13 +290,15 @@ el.error = {
       :host {
         display: block;
         @apply(--layout-vertical);
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
       }
     </style>
 
     <template is="dom-if" if={{!wizard}}>
       <div class="header" hidden$="[[!label]]">[[label]]</div>
     </template>
-    <div id="form" class="layout vertical wrap"></div>
+    <div id="form" class="layout vertical horizontal wrap"></div>
 
   </template>
 

@@ -9,7 +9,7 @@
   <link rel="import" href="../iron-validator-behavior/iron-validator-behavior.html"/>
 
   <template>
-    <style is="custom-style">
+    <style is="custom-style"  include="iron-flex iron-flex-alignment">
       paper-input {
         --paper-input-container-label: {
           white-space: normal;
@@ -32,10 +32,10 @@
       }
     </style>
 
-    <paper-dropdown-menu id="dropdown" class="flex custom" value="{{value}}">
+    <paper-dropdown-menu id="dropdown" class="layout horizontal vertical" value="{{value}}">
       <paper-menu class="dropdown-content">
         <template is="dom-repeat" items="[[_items]]">
-          <paper-item label="[[item]]">[[item]]</paper-item>
+          <paper-item class="flex" label="[[item]]">[[item]]</paper-item>
         </template>
       </paper-menu>
     </paper-dropdown-menu>

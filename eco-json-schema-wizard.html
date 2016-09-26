@@ -298,17 +298,29 @@ el.error = {
         display: block;
         @apply(--layout-vertical);
       }
+
+      .box, #form {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
     </style>
 
-    <div class="layout vertical nowrap">
+    <div  class="horizontal vertical flex layout">
       <paper-toolbar>
         <paper-icon-button id="prevButton" icon="icons:arrow-back" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev')}}</paper-icon-button>
         <!--paper-icon-button id="camButton" icon="editor:insert-photo" raised>add photo</paper-icon-button-->
-        <span class="title" style="white-space: normal;">[[title]]</span>
+        <span class="title layout horizontal flex" style="white-space: normal;">[[title]]</span>
         <paper-icon-button id="nextButton" icon="icons:arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
         <paper-icon-button id="submitButton" icon="icons:cloud-upload" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
       </paper-toolbar>
-      <iron-pages id="form" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+      <iron-pages id="form" class="layout vertical flex" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
      </div>
   </template>
 
@@ -508,7 +520,7 @@ el.error = {
           });
 
           el.setAttribute('name', property.property);
-          el.className = 'layout horizontal nowrap flex-auto';
+          el.className = 'horizontal vertical flex layout';
 
           property.value = el[property.component.valueProperty];
           ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');

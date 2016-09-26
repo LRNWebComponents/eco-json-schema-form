@@ -37,27 +37,14 @@ Please see the `eco-json-schema-object` documentation for further information.
         }
       }
 
-      .box {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-flex-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
+      .label {
+        @apply(--paper-input-container-label);
+        white-space: normal;
+        position: static;
+        font-size: 22px;
+        color: #212121;
       }
-        .label {
-          @apply(--paper-input-container-label);
-          white-space: normal;
-          position: static;
-          font-size: 22px;
-          color: #212121;
-        }
 
-    </style>
-    <style>
       :host {
         display: block;
 
@@ -71,11 +58,11 @@ Please see the `eco-json-schema-object` documentation for further information.
       }
     </style>
 
-    <div class="box">
-      <div class="label layout start-aligned" hidden$="[[!label]]">[[label]]</div><paper-icon-button class="layout end-aligned" icon="add" on-click="_onAddItem"></paper-icon-button>
+    <div class="horizontal layout">
+      <div class="flex" hidden$="[[!label]]">[[label]]</div><paper-icon-button icon="add" on-click="_onAddItem"></paper-icon-button>
     </div>
 
-    <div id="form" class="vertical center flex layout"></div>
+    <div id="form" class="vertical horizontal flex layout"></div>
 
   </template>
 
@@ -153,8 +140,7 @@ Please see the `eco-json-schema-object` documentation for further information.
 
               ctx.listen(buttonEl, 'tap', '_onRemoveItem');
 
-              componentEl.classList.add('flex');
-              containerEl.classList.add('horizontal', 'layout');
+              componentEl.classList.add('flex', 'horizontal', 'layout');
 
               Polymer.dom(containerEl).appendChild(componentEl);
               Polymer.dom(containerEl).appendChild(buttonEl);
