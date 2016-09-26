@@ -22,7 +22,7 @@ Please see the `eco-json-schema-object` documentation for further information.
   <link rel="import" href="../paper-input/paper-input.html" />
 
   <template>
-    <style is="custom-style">
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
       paper-input {
         padding: 2px;
 
@@ -35,11 +35,10 @@ Please see the `eco-json-schema-object` documentation for further information.
       }
     </style>
 
-    <paper-input id="input" value="{{value}}" auto-validate>
-
-    </paper-input>
-    <paper-input-image no-image-text="{{localize('add-image')}}">
-    </paper-input-image>
+    <div class="layout horizontal nowrap">
+      <paper-input id="input" value="{{value}}" auto-validate></paper-input>
+      <paper-input-image no-image-text="{{localize('add-image')}}"></paper-input-image>
+    </div>
 
   </template>
 
