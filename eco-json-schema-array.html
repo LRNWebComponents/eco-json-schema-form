@@ -36,9 +36,15 @@ Please see the `eco-json-schema-object` documentation for further information.
           color: #212121;
         }
       }
+      .box {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+      }
     </style>
 
-    <div class="layout start-aligned" hidden$="[[!label]]">[[label]]<paper-icon-button class="layout end-aligned" icon="add" on-click="_onAddItem"></paper-icon-button></div>
+    <div class="box layout start-aligned" hidden$="[[!label]]">[[label]]<paper-icon-button class="layout end-aligned" icon="add" on-click="_onAddItem"></paper-icon-button></div>
 
     <div id="form" class="vertical center flex layout"></div>
 
