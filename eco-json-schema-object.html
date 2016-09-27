@@ -287,10 +287,9 @@ el.error = {
   <template>
 
     <style is="custom-style" include="iron-flex iron-flex-alignment">
-      :host {
+      #form {
         display: block;
         @apply(--layout-vertical);
-        @apply(--layout-horizontal);
         @apply(--layout-wrap);
       }
     </style>
@@ -298,7 +297,10 @@ el.error = {
     <template is="dom-if" if={{!wizard}}>
       <div class="header" hidden$="[[!label]]">[[label]]</div>
     </template>
-    <div id="form" class="layout vertical horizontal wrap"></div>
+    <div class="layout vertical flex start-justified">
+      <div id="form" class="layout horizontal flex start-justified"></div>
+    </div>
+
 
   </template>
 
@@ -458,6 +460,7 @@ el.error = {
           });
 
           el.setAttribute('name', property.property);
+          el.className = 'flex start-justified';
 
           property.value = el[property.component.valueProperty];
           ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
