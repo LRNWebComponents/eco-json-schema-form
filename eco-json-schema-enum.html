@@ -60,6 +60,12 @@
           type: String,
           observer: '_errorChanged',
           value: null
+        },
+        _items: {
+          type: Object,
+          value: function() {
+            return {};
+          }
         }
       },
       ready: function () {

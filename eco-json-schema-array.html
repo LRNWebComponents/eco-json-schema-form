@@ -85,6 +85,11 @@ Please see the `eco-json-schema-object` documentation for further information.
         error: {
           type: Object,
           observer: '_errorChanged'
+        },
+        _schemaArrayItems: {
+          type: Array,
+          notify: true,
+          value: function() { return []; }
         }
       },
       observers: [
