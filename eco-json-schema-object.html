@@ -334,7 +334,11 @@ el.error = {
         error: {
           type: Object,
           observer: '_errorChanged'
-        }
+        },
+        wizard: {
+          type: Boolean,
+          notify: true
+        },
       },
       ready: function() {
 
