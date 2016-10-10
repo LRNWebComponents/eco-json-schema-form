@@ -365,6 +365,9 @@ el.error = {
           if (ctx._isSchemaEnum(schema)) {
             property.component.name = property.component.name || 'eco-json-schema-enum';
             property.value = '';
+          } else if (ctx._isSchemaGeo(schema.type)) {
+            property.component.name = property.component.name || 'eco-json-schema-geolocation';
+            property.value = {};
           } else if (ctx._isSchemaBoolean(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-boolean';
             property.value = false;
@@ -535,6 +538,9 @@ el.error = {
         } else {
           return type === 'string';
         }
+      },
+      _isSchemaGeo: function (type) {
+        return type === 'geolocation';
       },
       _isSchemaObject: function (type) {
         return type === 'object';

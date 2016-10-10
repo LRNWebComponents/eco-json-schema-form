@@ -118,6 +118,8 @@ Please see the `eco-json-schema-object` documentation for further information.
           if (schema.format === 'date-time') {
             inputEl.type = 'datetime-local';
             inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
+          } else if (schema.format === 'date') {
+            inputEl.type = 'date';
           } else if (schema.format === 'email') {
             inputEl.type = 'email';
           } else if (schema.format === 'hostname') {

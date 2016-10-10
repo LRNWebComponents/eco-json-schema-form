@@ -1,0 +1,139 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
+<link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
+
+<!--
+`eco-json-schema-geolocation` takes in a JSON schema of type number and string and
+contains a `paper-geolocation`, exposing a `value` property that represents the schema.
+
+Validation is handled for strings and number/integers by mapping JSON schema
+validation keywords to `paper-geolocation` attributes; form elements will automatically
+try and validate themselves as users provide input:
+
+Please see the `eco-json-schema-object` documentation for further information.
+
+@group eco Elements
+@element eco-json-schema-geolocation
+@demo demo/index.html
+-->
+
+<dom-module id="eco-json-schema-geolocation">
+
+<link rel="import" href="../paper-input/paper-input.html"/>
+<link rel="import" href="../paper-input/paper-input-container.html">
+<link rel="import" href="../paper-input/paper-input-error.html">
+<link rel="import" href="../paper-styles/typography.html"/>
+<link rel="import" href="../geo-location/geo-location.html"/>
+
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+      paper-input {
+        padding: 2px;
+
+        --paper-input-container-label: {
+          white-space: normal;
+          position: static;
+          font-size: 22px;
+          color: #212121;
+        }
+      }
+    </style>
+
+    <paper-input-container no-label-float="[[noLabelFloat]]" always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]" auto-validate$="[[autoValidate]]" disabled$="[[disabled]]" invalid="[[invalid]]">
+
+      <content select="[prefix]"></content>
+
+      <label class="rate-label"  aria-hidden="false" for="icon-rate">[[label]]</label>
+
+      <geo-location latitude="{{latitude}}"
+                    longitude="{{longitude}}"></geo-location>
+
+      <template is="dom-if" if={{!loggedIn}} restamp>
+        <google-map latitude="[[latitude]]" longitude="[[longitude]]">
+          <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]"></google-map-marker>
+        </google-map>
+      </template>
+
+      <paper-input id="lat"
+                  class="flex"
+                  value="{{latitude}}"
+                  required>
+      </paper-input>
+
+      <paper-input id="lng"
+                  class="flex"
+                  value="{{longitude}}"
+                  required>
+      </paper-input>
+
+      <!--<paper-input id="map"
+                  class="flex"
+                  value="{{mapvalue}}"
+                  hidden
+                  required>-->
+
+
+      <template is="dom-if" if="[[errorMessage]]">
+        <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
+      </template>
+    </paper-input-container>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'eco-json-schema-geolocation',
+      behaviors: [
+        Polymer.AppLocalizeBehavior
+      ],
+
+      properties: {
+        language: {
+          value: 'en'
+        },
+        resources: {
+          value: function() {
+            return {};
+          }
+        },
+        schema: {
+          type: Object,
+          observer: '_schemaChanged'
+        },
+        value: {
+          type: Object,
+          notify: true,
+          value: function () {
+            return {};
+          }
+        },
+        error: {
+          type: String,
+          observer: '_errorChanged',
+          value: null
+        }
+      },
+      ready: function () {
+
+      },
+      detached: function () {
+
+      },
+      _schemaChanged: function () {
+        var schema = this.schema;
+      },
+      _errorChanged: function() {
+        if (this.error) {
+          this.errorMessage = this.error;
+          this.$.lat.invalid = true;
+          this.$.lng.invalid = true;
+        } else {
+          this.$.lat.invalid = false;
+          this.$.lng.invalid = false;
+          this.errorMessage = null;
+        }
+      }
+    });
+  </script>
+
+</dom-module>
