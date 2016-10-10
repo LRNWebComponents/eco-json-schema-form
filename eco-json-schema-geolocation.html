@@ -24,6 +24,7 @@ Please see the `eco-json-schema-object` documentation for further information.
 <link rel="import" href="../paper-input/paper-input-error.html">
 <link rel="import" href="../paper-styles/typography.html"/>
 <link rel="import" href="../geo-location/geo-location.html"/>
+<link rel="import" href="../google-map/google-map.html"/>
 
   <template>
     <style is="custom-style" include="iron-flex iron-flex-alignment">
@@ -43,7 +44,7 @@ Please see the `eco-json-schema-object` documentation for further information.
 
       <content select="[prefix]"></content>
 
-      <label class="rate-label"  aria-hidden="false" for="icon-rate">[[label]]</label>
+      <label class="rate-label" aria-hidden="false" for="icon-rate">[[label]]</label>
 
       <geo-location latitude="{{latitude}}"
                     longitude="{{longitude}}"></geo-location>
@@ -54,17 +55,22 @@ Please see the `eco-json-schema-object` documentation for further information.
         </google-map>
       </template>
 
-      <paper-input id="lat"
-                  class="flex"
-                  value="{{latitude}}"
-                  required>
-      </paper-input>
 
-      <paper-input id="lng"
-                  class="flex"
-                  value="{{longitude}}"
-                  required>
-      </paper-input>
+      <paper-material elevation="0" class="layout">
+        <paper-input id="lat"
+                    class="flex"
+                    label="{{localize('latitude')}}"
+                    value="{{latitude}}"
+                    required>
+        </paper-input>
+
+        <paper-input id="lng"
+                    class="flex"
+                    label="{{localize('longitude')}}"
+                    value="{{longitude}}"
+                    required>
+        </paper-input>
+      </paper-material>
 
       <!--<paper-input id="map"
                   class="flex"
@@ -92,9 +98,9 @@ Please see the `eco-json-schema-object` documentation for further information.
           value: 'en'
         },
         resources: {
-          value: function() {
-            return {};
-          }
+          type: Object,
+          notify: true,
+          observer: '_resourceUpdated'
         },
         schema: {
           type: Object,
@@ -116,8 +122,13 @@ Please see the `eco-json-schema-object` documentation for further information.
       ready: function () {
 
       },
-      detached: function () {
-
+      _resourceUpdated: function () {
+        if(this.resource[this.language]['latitude'] === undefined){
+          this.set('resource.'+this.language+'.latitude', 'latitude');
+        }
+        if(this.resource[this.language]['longitude'] === undefined){
+          this.set('resource.'+this.language+'.longitude', 'longitude');
+        }
       },
       _schemaChanged: function () {
         var schema = this.schema;
