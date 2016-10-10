@@ -56,20 +56,20 @@ Please see the `eco-json-schema-object` documentation for further information.
         <paper-input id="lat"
                     class="flex"
                     label="{{localize('latitude')}}"
-                    value="{{latitude}}"
+                    value="[[latitude]]"
                     required>
         </paper-input>
 
         <paper-input id="lng"
                     class="flex"
                     label="{{localize('longitude')}}"
-                    value="{{longitude}}"
+                    value="[[longitude]]"
                     required>
         </paper-input>
       </paper-material>
 
 
-      <leaflet-map latitude="[[latitude]]" longitude="[[longitude]]" zoom="13">
+      <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="13">
           <leaflet-marker latitude="[[latitude]]" longitude="[[longitude]]">
           </leaflet-marker>
       </leaflet-map>
