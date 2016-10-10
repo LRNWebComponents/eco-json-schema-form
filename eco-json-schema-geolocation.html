@@ -67,11 +67,9 @@ Please see the `eco-json-schema-object` documentation for further information.
         </paper-input>
       </paper-material>
 
-      <template is="dom-if" if={{map}} restamp>
-        <google-map latitude="[[latitude]]" longitude="[[longitude]]">
-          <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]"></google-map-marker>
-        </google-map>
-      </template>
+      <google-map latitude="[[latitude]]" longitude="[[longitude]]">
+        <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]"></google-map-marker>
+      </google-map>
 
       <!--<paper-input id="map"
                   class="flex"
@@ -118,11 +116,6 @@ Please see the `eco-json-schema-object` documentation for further information.
           type: String,
           observer: '_errorChanged',
           value: null
-        },
-        map: {
-          type: Boolean,
-          notify: true,
-          value: false
         }
       },
       ready: function () {
