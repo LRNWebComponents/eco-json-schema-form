@@ -24,7 +24,7 @@ Please see the `eco-json-schema-object` documentation for further information.
 <link rel="import" href="../paper-input/paper-input-error.html">
 <link rel="import" href="../paper-styles/typography.html"/>
 <link rel="import" href="../geo-location/geo-location.html"/>
-<link rel="import" href="../google-map/google-map.html"/>
+<link rel="import" href="../map-box/map-box.html"/>
 
   <template>
     <style is="custom-style" include="iron-flex iron-flex-alignment">
@@ -67,9 +67,18 @@ Please see the `eco-json-schema-object` documentation for further information.
         </paper-input>
       </paper-material>
 
-      <google-map latitude="[[latitude]]" longitude="[[longitude]]">
-        <google-map-marker latitude="[[latitude]]" longitude="[[longitude]]"></google-map-marker>
-      </google-map>
+      <mapbox-map id="map"
+        zoom="15"
+        latitude="[[latitude]]"
+        longitude="[[longitude]]">
+        <mapbox-marker
+          latitude="{{latitude}}"
+          longitude="{{longitude}}"
+          symbol="pitch"
+          color="#ff0000"
+          draggable>
+        </mapbox-marker>
+      </mapbox-map>
 
       <!--<paper-input id="map"
                   class="flex"
