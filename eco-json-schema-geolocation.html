@@ -74,13 +74,6 @@ Please see the `eco-json-schema-object` documentation for further information.
           </leaflet-marker>
       </leaflet-map>
 
-      <!--<paper-input id="map"
-                  class="flex"
-                  value="{{mapvalue}}"
-                  hidden
-                  required>-->
-
-
       <template is="dom-if" if="[[errorMessage]]">
         <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
       </template>
@@ -101,8 +94,7 @@ Please see the `eco-json-schema-object` documentation for further information.
         },
         resources: {
           type: Object,
-          notify: true,
-          observer: '_resourceUpdated'
+          notify: true
         },
         schema: {
           type: Object,
@@ -123,14 +115,6 @@ Please see the `eco-json-schema-object` documentation for further information.
       },
       ready: function () {
 
-      },
-      _resourceUpdated: function () {
-        if(this.resource[this.language]['latitude'] === undefined){
-          this.set('resource.'+this.language+'.latitude', 'latitude');
-        }
-        if(this.resource[this.language]['longitude'] === undefined){
-          this.set('resource.'+this.language+'.longitude', 'longitude');
-        }
       },
       _schemaChanged: function () {
         var schema = this.schema;
