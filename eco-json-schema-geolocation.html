@@ -50,29 +50,27 @@ Please see the `eco-json-schema-object` documentation for further information.
       <geo-location latitude="{{latitude}}"
                     longitude="{{longitude}}"></geo-location>
 
-
-
       <paper-material elevation="0" class="layout">
-        <paper-input id="lat"
-                    class="flex"
-                    label="{{localize('latitude')}}"
-                    value="[[latitude]]"
-                    required>
-        </paper-input>
+        <paper-material elevation="0" class="layout">
+          <paper-input id="lat"
+                      label="{{localize('latitude')}}"
+                      value="[[latitude]]"
+                      required>
+          </paper-input>
+          <paper-input id="lng"
+                      label="{{localize('longitude')}}"
+                      value="[[longitude]]"
+                      required>
+          </paper-input>
+        </paper-material>
 
-        <paper-input id="lng"
-                    class="flex"
-                    label="{{localize('longitude')}}"
-                    value="[[longitude]]"
-                    required>
-        </paper-input>
+        <paper-material elevation="0" class="layout flex">
+          <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="[[zoom]]">
+            <leaflet-marker latitude="[[latitude]]" longitude="[[longitude]]">
+            </leaflet-marker>
+          </leaflet-map>
+        </paper-material>
       </paper-material>
-
-
-      <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="13">
-          <leaflet-marker latitude="[[latitude]]" longitude="[[longitude]]">
-          </leaflet-marker>
-      </leaflet-map>
 
       <template is="dom-if" if="[[errorMessage]]">
         <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
@@ -111,6 +109,20 @@ Please see the `eco-json-schema-object` documentation for further information.
           type: String,
           observer: '_errorChanged',
           value: null
+        },
+        latitude: {
+          type: Number,
+          reflectToAttribute: true,
+          notify: true
+        },
+        longitude: {
+          type: Number,
+          reflectToAttribute: true,
+          notify: true
+        },
+        zoom: {
+          type: Number,
+          notify: true
         }
       },
       ready: function () {

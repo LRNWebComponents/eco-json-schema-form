@@ -370,6 +370,9 @@ el.error = {
             property.component.name = property.component.name || 'eco-json-schema-geolocation';
             property.value = {};
             property.map = true;
+            if (schema.zoom !== undefined){
+              property.zoom = schema.zoom;
+            }
           } else if (ctx._isSchemaBoolean(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-boolean';
             property.value = false;
