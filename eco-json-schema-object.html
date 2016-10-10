@@ -369,6 +369,7 @@ el.error = {
           } else if (ctx._isSchemaGeo(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-geolocation';
             property.value = {};
+            property.map = true;
           } else if (ctx._isSchemaBoolean(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-boolean';
             property.value = false;
