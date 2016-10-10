@@ -67,18 +67,11 @@ Please see the `eco-json-schema-object` documentation for further information.
         </paper-input>
       </paper-material>
 
-      <mapbox-map id="map"
-        zoom="15"
-        latitude="[[latitude]]"
-        longitude="[[longitude]]">
-        <mapbox-marker
-          latitude="{{latitude}}"
-          longitude="{{longitude}}"
-          symbol="pitch"
-          color="#ff0000"
-          draggable>
-        </mapbox-marker>
-      </mapbox-map>
+
+      <leaflet-map latitude="[[latitude]]" longitude="[[longitude]]" zoom="13">
+          <leaflet-marker latitude="[[latitude]]" longitude="[[longitude]]">
+          </leaflet-marker>
+      </leaflet-map>
 
       <!--<paper-input id="map"
                   class="flex"

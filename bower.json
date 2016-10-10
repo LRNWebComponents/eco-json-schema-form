@@ -35,7 +35,8 @@
     "iron-validator-behavior": "PolymerElements/iron-validator-behavior#^1.0.1",
     "geo-location": "^1.0.6",
     "google-map": "GoogleWebComponents/google-map#^1.1.13",
-    "map-box": "mapbox-map#^0.1.6"
+    "map-box": "mapbox-map#^0.1.6",
+    "leaflet-map": "^1.2.0"
   },
   "devDependencies": {
     "ace-builds": "~1.2.0",
