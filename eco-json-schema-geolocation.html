@@ -56,21 +56,9 @@ Please see the `eco-json-schema-object` documentation for further information.
       <template is="dom-if" if="{{latitude}}">
         <paper-material elevation="0" class="layout">
           <paper-material elevation="0" class="layout">
-            <paper-input id="lat"
-                        label="{{localize('latitude')}}"
-                        value="[[latitude]]"
-                        required>
-            </paper-input>
-            <paper-input id="lng"
-                        label="{{localize('longitude')}}"
-                        value="[[longitude]]"
-                        required>
-            </paper-input>
-            <paper-input id="acc"
-                        label="{{localize('accuracy')}}"
-                        value="[[accuracy]]"
-                        required>
-            </paper-input>
+            {{localize('latitude')}}: <span>{{latitude}}</span>,
+            {{localize('longitude')}}: <span>{{longitude}}</span>,
+            {{localize('accuracy')}}: <span>{{accuracy}}</span>m
           </paper-material>
         </paper-material>
       </template>
