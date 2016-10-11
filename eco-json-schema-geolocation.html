@@ -62,11 +62,11 @@ Please see the `eco-json-schema-object` documentation for further information.
       </paper-material>
     </template>
 
-    <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
-      <!-- request geo-location information -->
       <leaflet-geolocation enable-high-accuracy
         latitude="{{latitude}}" longitude="{{longitude}}" accuracy="{{accuracy}}">
       </leaflet-geolocation>
+    <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
+      <!-- request geo-location information -->
 
       <!--add marker, if location information is available-->
       <template is="dom-if" if="{{latitude}}">
