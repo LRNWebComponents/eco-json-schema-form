@@ -52,19 +52,19 @@ Please see the `eco-json-schema-object` documentation for further information.
       }
     </style>
 
-
-    <!-- information text above the map -->
-    <template is="dom-if" if="{{!latitude}}">
-        {{localize('location-unknown')}}
-    </template>
-
     <geo-location watch-pos
                   high-accuracy
                   latitude="{{latitude}}"
                   longitude="{{longitude}}">
     </geo-location>
 
-    <!--<template is="dom-if" if="{{latitude}}">-->
+    <!-- information text above the map -->
+    <template is="dom-if" if="{{!latitude}}">
+        {{localize('location-unknown')}}
+    </template>
+
+
+    <template is="dom-if" if="{{latitude}}">
       <paper-material elevation="0" class="layout">
         <paper-material elevation="0" class="layout">
           {{localize('latitude')}}: <span>{{latitude}}</span>,
@@ -72,9 +72,9 @@ Please see the `eco-json-schema-object` documentation for further information.
           <!--,{{localize('accuracy')}}: <span>{{accuracy}}</span>m-->
         </paper-material>
       </paper-material>
-    <!--</template>-->
+    </template>
 
-    <osm-map longitude="{{longitude}}" latitude="{{latitude}}" zoom="15">
+    <osm-map id="map" longitude="{{longitude}}" latitude="{{latitude}}" zoom="15">
       <osm-marker longitude="{{longitude}}" latitude="{{latitude}}"></osm-marker>
     </osm-map>
 
