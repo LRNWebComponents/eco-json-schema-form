@@ -65,16 +65,17 @@ Please see the `eco-json-schema-object` documentation for further information.
       <leaflet-geolocation enable-high-accuracy
         latitude="{{latitude}}" longitude="{{longitude}}" accuracy="{{accuracy}}">
       </leaflet-geolocation>
-    <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
-      <!-- request geo-location information -->
 
-      <!--add marker, if location information is available-->
-      <template is="dom-if" if="{{latitude}}">
-        <leaflet-circle latitude="{{latitude}}" longitude="{{longitude}}"
-          radius="{{accuracy}}" color="#ff2020" fillColor="#d82205" fillOpacity="0.5" fill="true">
-        </leaflet-circle>
-      </template>
-    </leaflet-map>
+    <template is="dom-if" if="{{latitude}}">
+      <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
+        <!-- request geo-location information -->
+
+        <!--add marker, if location information is available-->
+          <leaflet-circle latitude="{{latitude}}" longitude="{{longitude}}"
+            radius="{{accuracy}}" color="#ff2020" fillColor="#d82205" fillOpacity="0.5" fill="true">
+          </leaflet-circle>
+      </leaflet-map>
+    </template>
 
     <template is="dom-if" if="[[errorMessage]]">
       <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
