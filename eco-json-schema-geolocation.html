@@ -29,6 +29,12 @@ Please see the `eco-json-schema-object` documentation for further information.
 
 <link rel="import" href="../leaflet-map/leaflet-map.html"/>
 
+<link rel="import" href="../osm-map/osm-map.html">
+<link rel="import" href="../osm-map/osm-marker.html">
+<link rel="import" href="../osm-map/osm-point.html">
+<link rel="import" href="../osm-map/osm-poly.html">
+<link rel="import" href="../osm-map/osm-layer.html">
+
   <template>
     <style is="custom-style" include="iron-flex iron-flex-alignment">
       :host { display: block; overflow: hidden}
@@ -52,30 +58,40 @@ Please see the `eco-json-schema-object` documentation for further information.
         {{localize('location-unknown')}}
     </template>
 
+    <geo-location watch-pos
+                  high-accuracy
+                  latitude="{{latitude}}"
+                  longitude="{{longitude}}">
+    </geo-location>
+
     <!--<template is="dom-if" if="{{latitude}}">-->
       <paper-material elevation="0" class="layout">
         <paper-material elevation="0" class="layout">
           {{localize('latitude')}}: <span>{{latitude}}</span>,
-          {{localize('longitude')}}: <span>{{longitude}}</span>,
-          {{localize('accuracy')}}: <span>{{accuracy}}</span>m
+          {{localize('longitude')}}: <span>{{longitude}}</span>
+          <!--,{{localize('accuracy')}}: <span>{{accuracy}}</span>m-->
         </paper-material>
       </paper-material>
     <!--</template>-->
 
-    <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
+    <osm-map longitude="{{longitude}}" latitude="{{latitude}}" zoom="15">
+      <osm-marker longitude="{{longitude}}" latitude="{{latitude}}"></osm-marker>
+    </osm-map>
 
-      <!-- request geo-location information -->
+    <!--<leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
+
+      <! - - request geo-location information - - >
       <leaflet-geolocation enable-high-accuracy
         latitude="{{latitude}}" longitude="{{longitude}}" accuracy="{{accuracy}}">
       </leaflet-geolocation>
 
-      <!--add marker, if location information is available-->
+      <! - -add marker, if location information is available- - >
       <template is="dom-if" if="{{latitude}}">
         <leaflet-circle latitude="{{latitude}}" longitude="{{longitude}}"
           radius="{{accuracy}}" color="#ff2020" fillColor="#d82205" fillOpacity="0.5" fill="true">
         </leaflet-circle>
       </template>
-    </leaflet-map>
+    </leaflet-map>-->
 
     <template is="dom-if" if="[[errorMessage]]">
       <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>

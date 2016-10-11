@@ -33,7 +33,9 @@
     "polymer": "Polymer/polymer#^1.7.0",
     "iron-pages": "PolymerElements/iron-pages#^1.0.8",
     "iron-validator-behavior": "PolymerElements/iron-validator-behavior#^1.0.1",
-    "leaflet-map": "git+https://github.com/s-cradle/leaflet-map.git#master"
+    "leaflet-map": "git+https://github.com/s-cradle/leaflet-map.git#master",
+    "osm-map": "FabianBormann/osm-map",
+    "geo-location": "^1.0.6"
   },
   "devDependencies": {
     "ace-builds": "^1.2.5",
@@ -42,13 +44,5 @@
     "paper-material": "^1.0.6",
     "paper-styles": "^1.1.5",
     "web-component-tester": "^4.3.5"
-  },
-  "resolutions": {
-    "paper-checkbox": "^1.4.1",
-    "app-localize-behavior": "^0.10.0",
-    "jsoneditor": "^5.5.8",
-    "web-component-tester": "^4.3.5",
-    "async": "^1.5.0",
-    "chai": "^3.2.0"
   }
 }
