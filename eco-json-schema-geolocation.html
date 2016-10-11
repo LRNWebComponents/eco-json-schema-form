@@ -52,7 +52,7 @@ Please see the `eco-json-schema-object` documentation for further information.
         {{localize('location-unknown')}}
     </template>
 
-    <template is="dom-if" if="{{latitude}}">
+    <!--<template is="dom-if" if="{{latitude}}">-->
       <paper-material elevation="0" class="layout">
         <paper-material elevation="0" class="layout">
           {{localize('latitude')}}: <span>{{latitude}}</span>,
@@ -60,7 +60,7 @@ Please see the `eco-json-schema-object` documentation for further information.
           {{localize('accuracy')}}: <span>{{accuracy}}</span>m
         </paper-material>
       </paper-material>
-    </template>
+    <!--</template>-->
 
     <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
 
