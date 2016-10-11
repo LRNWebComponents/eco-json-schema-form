@@ -136,11 +136,7 @@ Please see the `eco-json-schema-object` documentation for further information.
       _errorChanged: function() {
         if (this.error) {
           this.errorMessage = this.error;
-          this.$.lat.invalid = true;
-          this.$.lng.invalid = true;
         } else {
-          this.$.lat.invalid = false;
-          this.$.lng.invalid = false;
           this.errorMessage = null;
         }
       },
