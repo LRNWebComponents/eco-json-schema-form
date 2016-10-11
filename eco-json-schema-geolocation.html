@@ -19,16 +19,21 @@ Please see the `eco-json-schema-object` documentation for further information.
 
 <dom-module id="eco-json-schema-geolocation">
 
-<link rel="import" href="../paper-input/paper-input.html"/>
-<link rel="import" href="../paper-input/paper-input-container.html">
-<link rel="import" href="../paper-input/paper-input-error.html">
-<link rel="import" href="../paper-styles/typography.html"/>
-<link rel="import" href="../geo-location/geo-location.html"/>
-<link rel="import" href="../leaflet-map/leaflet-map.html"/>
-<link rel="import" href="../leaflet-map/leaflet-marker.html"/>
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/communication-icons.html">
+
+<link rel="import" href="../bower_components/paper-input/paper-input.html"/>
+<link rel="import" href="../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../bower_components/paper-input/paper-input-error.html">
+<link rel="import" href="../bower_components/paper-styles/typography.html"/>
+
+<link rel="import" href="../bower_components/leaflet-map/leaflet-map.html"/>
 
   <template>
     <style is="custom-style" include="iron-flex iron-flex-alignment">
+      :host { display: block; overflow: hidden}
+      :host leaflet-map {height:18em; width:18em; border: none}
+
       paper-input {
         padding: 2px;
 
@@ -43,34 +48,47 @@ Please see the `eco-json-schema-object` documentation for further information.
 
     <paper-input-container no-label-float="[[noLabelFloat]]" always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]" auto-validate$="[[autoValidate]]" disabled$="[[disabled]]" invalid="[[invalid]]">
 
-      <content select="[prefix]"></content>
+      <!-- information text above the map -->
+      <template is="dom-if" if="{{!latitude}}">
+          {{localize('location-unknown')}}
+      </template>
 
-      <label class="rate-label" aria-hidden="false" for="icon-rate">[[label]]</label>
-
-      <geo-location latitude="{{latitude}}"
-                    longitude="{{longitude}}"></geo-location>
-
-      <paper-material elevation="0" class="layout">
+      <template is="dom-if" if="{{latitude}}">
         <paper-material elevation="0" class="layout">
-          <paper-input id="lat"
-                      label="{{localize('latitude')}}"
-                      value="[[latitude]]"
-                      required>
-          </paper-input>
-          <paper-input id="lng"
-                      label="{{localize('longitude')}}"
-                      value="[[longitude]]"
-                      required>
-          </paper-input>
+          <paper-material elevation="0" class="layout">
+            <paper-input id="lat"
+                        label="{{localize('latitude')}}"
+                        value="[[latitude]]"
+                        required>
+            </paper-input>
+            <paper-input id="lng"
+                        label="{{localize('longitude')}}"
+                        value="[[longitude]]"
+                        required>
+            </paper-input>
+            <paper-input id="acc"
+                        label="{{localize('accuracy')}}"
+                        value="[[accuracy]]"
+                        required>
+            </paper-input>
+          </paper-material>
         </paper-material>
+      </template>
 
-        <paper-material elevation="0" class="layout flex">
-          <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="[[zoom]]">
-            <leaflet-marker latitude="[[latitude]]" longitude="[[longitude]]">
-            </leaflet-marker>
-          </leaflet-map>
-        </paper-material>
-      </paper-material>
+      <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
+
+        <!-- request geo-location information -->
+        <leaflet-geolocation enable-high-accuracy
+          latitude="{{latitude}}" longitude="{{longitude}}" accuracy="{{accuracy}}">
+        </leaflet-geolocation>
+
+        <!--add marker, if location information is available-->
+        <template is="dom-if" if="{{latitude}}">
+          <leaflet-circle latitude="{{latitude}}" longitude="{{longitude}}"
+            radius="{{accuracy}}" color="#ff2020" fillColor="#d82205" fillOpacity="0.5" fill="true">
+          </leaflet-circle>
+        </template>
+      </leaflet-map>
 
       <template is="dom-if" if="[[errorMessage]]">
         <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
@@ -99,11 +117,7 @@ Please see the `eco-json-schema-object` documentation for further information.
           observer: '_schemaChanged'
         },
         value: {
-          type: Object,
-          notify: true,
-          value: function () {
-            return {};
-          }
+          computed: 'computeValue(latitude, longitude)'
         },
         error: {
           type: String,
@@ -141,6 +155,9 @@ Please see the `eco-json-schema-object` documentation for further information.
           this.$.lng.invalid = false;
           this.errorMessage = null;
         }
+      },
+      computeValue: function(lat, lng){
+        return {"latitude":lat, "longitude":lng};
       }
     });
   </script>
