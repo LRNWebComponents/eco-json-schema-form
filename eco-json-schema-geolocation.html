@@ -46,42 +46,39 @@ Please see the `eco-json-schema-object` documentation for further information.
       }
     </style>
 
-    <paper-input-container no-label-float="[[noLabelFloat]]" always-float-label="[[_computeAlwaysFloatLabel(alwaysFloatLabel,placeholder)]]" auto-validate$="[[autoValidate]]" disabled$="[[disabled]]" invalid="[[invalid]]">
 
-      <!-- information text above the map -->
-      <template is="dom-if" if="{{!latitude}}">
-          {{localize('location-unknown')}}
-      </template>
+    <!-- information text above the map -->
+    <template is="dom-if" if="{{!latitude}}">
+        {{localize('location-unknown')}}
+    </template>
 
-      <template is="dom-if" if="{{latitude}}">
+    <template is="dom-if" if="{{latitude}}">
+      <paper-material elevation="0" class="layout">
         <paper-material elevation="0" class="layout">
-          <paper-material elevation="0" class="layout">
-            {{localize('latitude')}}: <span>{{latitude}}</span>,
-            {{localize('longitude')}}: <span>{{longitude}}</span>,
-            {{localize('accuracy')}}: <span>{{accuracy}}</span>m
-          </paper-material>
+          {{localize('latitude')}}: <span>{{latitude}}</span>,
+          {{localize('longitude')}}: <span>{{longitude}}</span>,
+          {{localize('accuracy')}}: <span>{{accuracy}}</span>m
         </paper-material>
+      </paper-material>
+    </template>
+
+    <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
+      <!-- request geo-location information -->
+      <leaflet-geolocation enable-high-accuracy
+        latitude="{{latitude}}" longitude="{{longitude}}" accuracy="{{accuracy}}">
+      </leaflet-geolocation>
+
+      <!--add marker, if location information is available-->
+      <template is="dom-if" if="{{latitude}}">
+        <leaflet-circle latitude="{{latitude}}" longitude="{{longitude}}"
+          radius="{{accuracy}}" color="#ff2020" fillColor="#d82205" fillOpacity="0.5" fill="true">
+        </leaflet-circle>
       </template>
+    </leaflet-map>
 
-      <leaflet-map id="map" latitude="[[latitude]]" longitude="[[longitude]]" zoom="15">
-
-        <!-- request geo-location information -->
-        <leaflet-geolocation enable-high-accuracy
-          latitude="{{latitude}}" longitude="{{longitude}}" accuracy="{{accuracy}}">
-        </leaflet-geolocation>
-
-        <!--add marker, if location information is available-->
-        <template is="dom-if" if="{{latitude}}">
-          <leaflet-circle latitude="{{latitude}}" longitude="{{longitude}}"
-            radius="{{accuracy}}" color="#ff2020" fillColor="#d82205" fillOpacity="0.5" fill="true">
-          </leaflet-circle>
-        </template>
-      </leaflet-map>
-
-      <template is="dom-if" if="[[errorMessage]]">
-        <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
-      </template>
-    </paper-input-container>
+    <template is="dom-if" if="[[errorMessage]]">
+      <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
+    </template>
 
   </template>
 
@@ -94,7 +91,7 @@ Please see the `eco-json-schema-object` documentation for further information.
 
       properties: {
         language: {
-          value: 'en'
+          value: 'es'
         },
         resources: {
           type: Object,
