@@ -39,6 +39,7 @@ Please see the `eco-json-schema-object` documentation for further information.
     <style is="custom-style" include="iron-flex iron-flex-alignment">
       :host { display: block; overflow: hidden}
       :host leaflet-map {height:16em; width:16em; border: none}
+      :host osm-map {height:16em; width:16em; border: none}
 
       paper-input {
         padding: 2px;
@@ -67,8 +68,8 @@ Please see the `eco-json-schema-object` documentation for further information.
     <template is="dom-if" if="{{latitude}}">
       <paper-material elevation="0" class="layout">
         <paper-material elevation="0" class="layout">
-          {{localize('latitude')}}: <span>{{latitude}}</span>,
-          {{localize('longitude')}}: <span>{{longitude}}</span>
+          latitude: <span>{{latitude}}</span>,
+          longitude: <span>{{longitude}}</span>
           <!--,{{localize('accuracy')}}: <span>{{accuracy}}</span>m-->
         </paper-material>
       </paper-material>
