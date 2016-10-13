@@ -140,7 +140,7 @@ Please see the `eco-json-schema-object` documentation for further information.
         }
       },
       geoError: function (event) {
-        var error = e.detail;
+        var error = event.detail;
         console.error(error);
         this.error = JSON.stringify(error);
       },
