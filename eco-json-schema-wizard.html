@@ -506,16 +506,26 @@ el.error = {
           });
         } else if (detail.path) {
           var parts = detail.path.split('.').slice(1);
+          var v = this.value;
+          if(!v.hasOwnProperty(property.property)) {
+            this.set('value.'+property.property, {})
+          }
           while (parts.length) {
-            path.push(parts.shift());
+            var k = parts.shift();
+            path.push(k);
+            v = v[k];
             if (property.keyMap && property.keyMap[path.join('.')]) {
               path = property.keyMap[path.join('.')].split('.');
             }
           }
-          this.set(path, this._deepClone(detail.value));
-        } else {
-          property.value = detail.value;
-          this.set(path, this._deepClone(detail.value));
+          this.set(path.join('.'), this._deepClone(detail.value));
+        //} else {
+          //console.log('Unknown');
+          //console.log("detail: "+JSON.stringify(detail));
+          //property.value = detail.value;
+          //this.set(path, this._deepClone(detail.value));
+
+          console.log("value: "+JSON.stringify(this.value));
         }
       },
       _setValue: function() {
