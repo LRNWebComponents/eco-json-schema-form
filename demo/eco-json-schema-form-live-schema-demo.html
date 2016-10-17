@@ -12,7 +12,7 @@
 
   <link rel="import" href="../eco-json-schema-wizard.html" />
 
-  <style>
+  <style is="custom-style" include="iron-flex iron-flex-alignment">
     paper-material {
       background: #ffffff;
       height: 100%;
@@ -28,24 +28,28 @@
     }
 
     #jsoneditor {
-      /*width: 600px;*/
+      width: 400px;
+      height: 93%;
+    }
+    eco-json-schema-wizard {
+      width: 400px;
       height: 93%;
     }
   </style>
   <template>
-    <div class="layout horizontal wrap">
-      <paper-material class="editor-container">
+    <div class="horizontal layout main-container">
+      <paper-material class="flex-2 editor-container">
         <h3>Schema Editor</h3>
         <div id="jsoneditor"></div>
       </paper-material>
 
-      <paper-material >
+      <paper-material class="flex-2">
         <h3>Generated Form</h3>
         <eco-json-schema-wizard language="[[language]]" resources="[[resources]]" id="schemaObj" on-submit="submit" page="{{page}}"
           pages="{{pages}}" schema="[[schema]]" value="{{value}}"></eco-json-schema-wizard>
       </paper-material>
 
-      <paper-material>
+      <paper-material class="flex">
         <h3>Value</h3>
         <pre id="valueText"></pre>
       </paper-material>
