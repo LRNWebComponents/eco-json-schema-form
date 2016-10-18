@@ -337,7 +337,7 @@ el.error = {
         <!--paper-icon-button id="camButton" icon="editor:insert-photo" raised>add photo</paper-icon-button-->
         <span class="title layout horizontal flex" style="white-space: normal;">[[title]]</span>
         <paper-icon-button id="nextButton" icon="arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
-        <paper-icon-button id="submitButton" icon="cloud-upload" hidden$="{{!canSubmit}}" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
+        <paper-icon-button id="submitButton" icon="cloud-upload" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
       </paper-toolbar>
       <iron-pages id="form" class="layout horizontal flex start-justified" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
      </div>
@@ -615,13 +615,7 @@ el.error = {
         }
         if (current === this.pages.length - 1) {
           this.set('hasNext', false);
-          this.set('canSubmit', true);
         } else {
-          if (this.isReview) {
-            this.set('canSubmit', true);
-          } else {
-            this.set('canSubmit', false);
-          }
           this.set('hasNext', true);
         }
       },
