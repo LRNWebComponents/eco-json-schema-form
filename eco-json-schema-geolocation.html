@@ -49,8 +49,8 @@ Please see the `eco-json-schema-object` documentation for further information.
       }
     </style>
 
-    <geo-location watch-pos
-                  high-accuracy
+    <!--<geo-location watch-pos-->
+    <geo-location high-accuracy
                   latitude="{{latitude}}"
                   longitude="{{longitude}}"
                   on-geo-error="geoError">
@@ -74,7 +74,7 @@ Please see the `eco-json-schema-object` documentation for further information.
 
     <div>
       <google-map id="map2" longitude="[[longitude]]" latitude="[[latitude]]" zoom="15">
-        <google-map-marker longitude="[[longitude]]" latitude="[[latitude]]"></google-map-marker>
+        <google-map-marker longitude="{{longitude}}" latitude="{{latitude}}" draggable="true"></google-map-marker>
       </google-map>
     </div>
 
@@ -104,7 +104,9 @@ Please see the `eco-json-schema-object` documentation for further information.
           observer: '_schemaChanged'
         },
         value: {
-          computed: 'computeValue(latitude, longitude)'
+          type: Object,
+          notify: true,
+          computed: '_geoLocationComp(latitude,longitude)'
         },
         error: {
           type: String,
@@ -113,13 +115,15 @@ Please see the `eco-json-schema-object` documentation for further information.
         },
         latitude: {
           type: Number,
-          reflectToAttribute: true,
-          notify: true
+          //observer: '_geoChange',
+          notify: true,
+          value: 1
         },
         longitude: {
           type: Number,
-          reflectToAttribute: true,
-          notify: true
+          //observer: '_geoChange',
+          notify: true,
+          value: 1
         },
         zoom: {
           type: Number,
@@ -127,7 +131,9 @@ Please see the `eco-json-schema-object` documentation for further information.
         }
       },
       ready: function () {
-
+        this.set('latitude', 0);
+        this.set('longitude', 0);
+        //this._geoLocationComp(this.latitude,this.longitude);
       },
       _schemaChanged: function () {
         var schema = this.schema;
@@ -144,8 +150,11 @@ Please see the `eco-json-schema-object` documentation for further information.
         console.error(error);
         this.error = JSON.stringify(error);
       },
-      computeValue: function(lat, lng){
-        return {"latitude":lat, "longitude":lng};
+      _geoLocationComp: function(latitude,longitude){
+        return {
+          'latitude': latitude,
+          'longitude': longitude
+        };
       }
     });
   </script>
