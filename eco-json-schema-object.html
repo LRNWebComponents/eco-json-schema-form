@@ -1,4 +1,4 @@
-<link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../polymer/polymer.html" />
 <link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html" />
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
@@ -278,34 +278,34 @@ el.error = {
 
 <dom-module id="eco-json-schema-object">
 
-  <link rel="import" href="./eco-json-schema-array.html"/>
-  <link rel="import" href="./eco-json-schema-boolean.html"/>
-  <link rel="import" href="./eco-json-schema-enum.html"/>
-  <link rel="import" href="./eco-json-schema-file.html"/>
-  <link rel="import" href="./eco-json-schema-geolocation.html"/>
-  <link rel="import" href="./eco-json-schema-input.html"/>
+	<link rel="import" href="./eco-json-schema-array.html" />
+	<link rel="import" href="./eco-json-schema-boolean.html" />
+	<link rel="import" href="./eco-json-schema-enum.html" />
+	<link rel="import" href="./eco-json-schema-file.html" />
+	<link rel="import" href="./eco-json-schema-geolocation.html" />
+	<link rel="import" href="./eco-json-schema-input.html" />
 
-  <template>
+	<template>
 
-    <style is="custom-style" include="iron-flex iron-flex-alignment">
-      #form {
-        display: block;
-        @apply(--layout-vertical);
-        @apply(--layout-wrap);
-      }
-    </style>
+		<style is="custom-style" include="iron-flex iron-flex-alignment">
+			#form {
+				display: block;
+				@apply(--layout-vertical);
+				@apply(--layout-wrap);
+			}
+		</style>
 
-    <template is="dom-if" if={{!wizard}}>
-      <div class="header" hidden$="[[!label]]">[[label]]</div>
-    </template>
-    <div class="layout vertical flex start-justified">
-      <div id="form" class="layout horizontal flex start-justified"></div>
-    </div>
+		<template is="dom-if" if={{!wizard}}>
+			<div class="header" hidden$="[[!label]]">[[label]]</div>
+		</template>
+		<div class="layout vertical flex start-justified">
+			<div id="form" class="layout horizontal flex start-justified"></div>
+		</div>
 
 
-  </template>
+	</template>
 
-  <script>
+	<script>
     Polymer({
       is: 'eco-json-schema-object',
       behaviors: [
@@ -378,7 +378,7 @@ el.error = {
             property.value = false;
           } else if (ctx._isSchemaFile(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-file';
-            property.value = '';
+            property.value = {};
           } else if (ctx._isSchemaValue(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-input';
             property.value = '';
@@ -424,28 +424,37 @@ el.error = {
             }
           }
 
-          detail.value.indexSplices.forEach(function(splice) {
-            var args = [path.join('.'), splice.index, splice.removed.length];
-            if (splice.addedCount) {
-              for (var i = 0, ii = splice.addedCount; i < ii; i++) {
-                if (splice.addedKeys && splice.addedKeys[i]) {
-                  property.keyMap = property.keyMap || {};
-                  property.keyMap[path.concat([splice.addedKeys[i]]).join('.')] = path.concat([i + splice.index]).join('.');
+          if (detail.value) {
+            detail.value.indexSplices.forEach(function(splice) {
+              var args = [path.join('.'), splice.index, splice.removed.length];
+              if (splice.addedCount) {
+                for (var i = 0, ii = splice.addedCount; i < ii; i++) {
+                  if (splice.addedKeys && splice.addedKeys[i]) {
+                    property.keyMap = property.keyMap || {};
+                    property.keyMap[path.concat([splice.addedKeys[i]]).join('.')] = path.concat([i + splice.index]).join('.');
+                  }
+                  args.push(ctx._deepClone(splice.object[i + splice.index]));
                 }
-                args.push(ctx._deepClone(splice.object[i + splice.index]));
               }
-            }
-            ctx.splice.apply(ctx, args);
-          });
+              ctx.splice.apply(ctx, args);
+            });
+          }
         } else if (detail.path) {
           var parts = detail.path.split('.').slice(1);
+          var v = this.value;
+          if(!v.hasOwnProperty(property.property)) {
+            this.set('value.'+property.property, {})
+          }
           while (parts.length) {
-            path.push(parts.shift());
+            var k = parts.shift();
+            path.push(k);
+            //path.push(parts.shift());
             if (property.keyMap && property.keyMap[path.join('.')]) {
               path = property.keyMap[path.join('.')].split('.');
             }
           }
-          this.set(path, this._deepClone(detail.value));
+          this.set(path.join('.'), this._deepClone(detail.value));
+          //this.set(path, this._deepClone(detail.value));
         } else {
           property.value = detail.value;
           this.set(path, this._deepClone(detail.value));
@@ -455,7 +464,9 @@ el.error = {
         var ctx = this;
         var value = {};
         this._schemaProperties.forEach(function (property) {
-          value[property.property] = ctx._deepClone(property.value);
+          //if(property.value !== undefined){
+            value[property.property] = ctx._deepClone(property.value);
+          //}
         });
         this.value = value;
       },

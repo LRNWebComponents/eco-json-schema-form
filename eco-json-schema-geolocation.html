@@ -1,5 +1,5 @@
-<link rel="import" href="../polymer/polymer.html"/>
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html"/>
+<link rel="import" href="../polymer/polymer.html" />
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html" />
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
@@ -19,72 +19,75 @@ Please see the `eco-json-schema-object` documentation for further information.
 
 <dom-module id="eco-json-schema-geolocation">
 
-<link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-icons/communication-icons.html">
+	<link rel="import" href="../iron-icons/iron-icons.html">
+	<link rel="import" href="../iron-icons/communication-icons.html">
 
-<link rel="import" href="../paper-input/paper-input.html"/>
-<link rel="import" href="../paper-input/paper-input-container.html">
-<link rel="import" href="../paper-input/paper-input-error.html">
-<link rel="import" href="../paper-styles/typography.html"/>
+	<link rel="import" href="../paper-input/paper-input.html" />
+	<link rel="import" href="../paper-input/paper-input-container.html">
+	<link rel="import" href="../paper-input/paper-input-error.html">
+	<link rel="import" href="../paper-styles/typography.html" />
 
-<link rel="import" href="../geo-location/geo-location.html"/>
+	<link rel="import" href="../geo-location/geo-location.html" />
 
-<link rel="import" href="../google-map/google-map.html"/>
-<link rel="import" href="../google-map/google-map-marker.html">
+	<link rel="import" href="../google-map/google-map.html" />
+	<link rel="import" href="../google-map/google-map-marker.html">
 
-  <template>
-    <style is="custom-style" include="iron-flex iron-flex-alignment">
-      :host { display: block; overflow: hidden}
-      :host google-map {height:16em; width:16em; border: none}
+	<template>
+		<style is="custom-style" include="iron-flex iron-flex-alignment">
+			:host {
+				display: block;
+				overflow: hidden
+			}
 
-      paper-input {
-        padding: 2px;
+			:host google-map {
+				height: 16em;
+				width: 16em;
+				border: none
+			}
 
-        --paper-input-container-label: {
-          white-space: normal;
-          position: static;
-          font-size: 22px;
-          color: #212121;
-        }
-      }
-    </style>
+			paper-input {
+				padding: 2px;
+				--paper-input-container-label: {
+					white-space: normal;
+					position: static;
+					font-size: 22px;
+					color: #212121;
+				}
+			}
+		</style>
 
-    <!--<geo-location watch-pos-->
-    <geo-location high-accuracy
-                  latitude="{{latitude}}"
-                  longitude="{{longitude}}"
-                  on-geo-error="geoError">
-    </geo-location>
+		<!--<geo-location watch-pos-->
+		<geo-location high-accuracy latitude="{{latitude}}" longitude="{{longitude}}" on-geo-error="geoError">
+		</geo-location>
 
-    <!-- information text above the map -->
-    <template is="dom-if" if="{{!latitude}}">
-        {{localize('location-unknown')}}
-    </template>
+		<!-- information text above the map -->
+		<template is="dom-if" if="{{!latitude}}">
+			{{localize('location-unknown')}}
+		</template>
 
 
-    <template is="dom-if" if="{{latitude}}">
-      <paper-material elevation="0" class="layout">
-        <paper-material elevation="0" class="layout">
-          latitud: <span>{{latitude}}</span>,
-          longitud: <span>{{longitude}}</span>
-          <!--,{{localize('accuracy')}}: <span>{{accuracy}}</span>m-->
-        </paper-material>
-      </paper-material>
-    </template>
+		<template is="dom-if" if="{{latitude}}">
+			<paper-material elevation="0" class="layout">
+				<paper-material elevation="0" class="layout">
+					latitud: <span>{{latitude}}</span>, longitud: <span>{{longitude}}</span>
+					<!--,{{localize('accuracy')}}: <span>{{accuracy}}</span>m-->
+				</paper-material>
+			</paper-material>
+		</template>
 
-    <div>
-      <google-map id="map2" longitude="[[longitude]]" latitude="[[latitude]]" zoom="15">
-        <google-map-marker longitude="{{longitude}}" latitude="{{latitude}}" draggable="true"></google-map-marker>
-      </google-map>
-    </div>
+		<div>
+			<google-map id="map2" longitude="[[longitude]]" latitude="[[latitude]]" zoom="15">
+				<google-map-marker longitude="{{longitude}}" latitude="{{latitude}}" draggable="true"></google-map-marker>
+			</google-map>
+		</div>
 
-    <template is="dom-if" if="[[errorMessage]]">
-      <paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
-    </template>
+		<template is="dom-if" if="[[errorMessage]]">
+			<paper-input-error aria-live="assertive">[[errorMessage]]</paper-input-error>
+		</template>
 
-  </template>
+	</template>
 
-  <script>
+	<script>
     Polymer({
       is: 'eco-json-schema-geolocation',
       behaviors: [
