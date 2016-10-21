@@ -513,22 +513,11 @@ el.error = {
           while (parts.length) {
             var k = parts.shift();
             path.push(k);
-            /*
-            if(!v.hasOwnProperty(k)) {
-              v[k]=new Object();
-            }
-            v = v[k];
-            */
             if (property.keyMap && property.keyMap[path.join('.')]) {
               path = property.keyMap[path.join('.')].split('.');
             }
           }
           this.set(path.join('.'), this._deepClone(detail.value));
-        //} else {
-          //console.log('Unknown');
-          //console.log("detail: "+JSON.stringify(detail));
-          //property.value = detail.value;
-          //this.set(path, this._deepClone(detail.value));
 
           console.log("value: "+JSON.stringify(this.value));
         }

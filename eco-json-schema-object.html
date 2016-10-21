@@ -448,13 +448,11 @@ el.error = {
           while (parts.length) {
             var k = parts.shift();
             path.push(k);
-            //path.push(parts.shift());
             if (property.keyMap && property.keyMap[path.join('.')]) {
               path = property.keyMap[path.join('.')].split('.');
             }
           }
           this.set(path.join('.'), this._deepClone(detail.value));
-          //this.set(path, this._deepClone(detail.value));
         } else {
           property.value = detail.value;
           this.set(path, this._deepClone(detail.value));
@@ -464,9 +462,7 @@ el.error = {
         var ctx = this;
         var value = {};
         this._schemaProperties.forEach(function (property) {
-          //if(property.value !== undefined){
-            value[property.property] = ctx._deepClone(property.value);
-          //}
+          value[property.property] = ctx._deepClone(property.value);
         });
         this.value = value;
       },
