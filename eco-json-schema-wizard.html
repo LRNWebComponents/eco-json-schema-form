@@ -512,6 +512,7 @@ el.error = {
           }
           while (parts.length) {
             var k = parts.shift();
+            path.push(k);
             /*
             if(!v.hasOwnProperty(k)) {
               v[k]=new Object();
