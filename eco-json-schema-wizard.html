@@ -284,66 +284,66 @@ el.error = {
 @element eco-json-schema-wizard
 @demo demo/index.html
 -->
-
 <dom-module id="eco-json-schema-wizard">
+  <link rel="import" href="./eco-json-schema-object.html" />
+  <link rel="import" href="./eco-json-schema-array.html" />
+  <link rel="import" href="./eco-json-schema-boolean.html" />
+  <link rel="import" href="./eco-json-schema-enum.html" />
+  <link rel="import" href="./eco-json-schema-file.html" />
+  <link rel="import" href="./eco-json-schema-geolocation.html" />
+  <link rel="import" href="./eco-json-schema-input.html" />
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+       :host {
+        display: block;
+        @apply(--layout-vertical);
+      }
 
-	<link rel="import" href="./eco-json-schema-object.html" />
-	<link rel="import" href="./eco-json-schema-array.html" />
-	<link rel="import" href="./eco-json-schema-boolean.html" />
-	<link rel="import" href="./eco-json-schema-enum.html" />
-	<link rel="import" href="./eco-json-schema-file.html" />
-	<link rel="import" href="./eco-json-schema-geolocation.html" />
-	<link rel="import" href="./eco-json-schema-input.html" />
+      paper-input {
+        padding: 2px;
+        --paper-input-container-label: {
+          white-space: normal;
+          position: static;
+          font-size: 22px;
+          color: #fff;
+        }
+      }
 
-	<template>
+      .box,
+      #form {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
 
-		<style is="custom-style" include="iron-flex iron-flex-alignment">
-			:host {
-				display: block;
-				@apply(--layout-vertical);
-			}
+      .fullbleed {
+        z-index: 1;
+      }
 
-			paper-input {
-				padding: 2px;
-				--paper-input-container-label: {
-					white-space: normal;
-					position: static;
-					font-size: 22px;
-					color: #fff;
-				}
-			}
-
-			.box,
-			#form {
-				display: -webkit-box;
-				display: -webkit-flex;
-				display: -moz-box;
-				display: -ms-flexbox;
-				display: flex;
-				-webkit-flex-align: center;
-				-ms-flex-align: center;
-				-webkit-align-items: center;
-				align-items: center;
-			}
-
-			.fullbleed {
-				z-index: 1;
-			}
-		</style>
-
-		<div class="vertical flex layout fullbleed">
-			<paper-toolbar>
-				<paper-icon-button id="prevButton" icon="arrow-back" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev')}}</paper-icon-button>
-				<!--paper-icon-button id="camButton" icon="editor:insert-photo" raised>add photo</paper-icon-button-->
-				<span class="title layout horizontal flex" style="white-space: normal;">[[title]]</span>
-				<paper-icon-button id="nextButton" icon="arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
-				<paper-icon-button id="submitButton" icon="cloud-upload" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
-			</paper-toolbar>
-			<iron-pages id="form" class="layout horizontal flex start-justified" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
-		</div>
-	</template>
-
-	<script>
+    </style>
+    <div class="vertical flex layout fullbleed">
+      <paper-toolbar>
+        <paper-icon-button id="prevButton" icon="arrow-back" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev')}}</paper-icon-button>
+        <!--paper-icon-button id="camButton" icon="editor:insert-photo" raised>add photo</paper-icon-button-->
+        <span class="title layout horizontal flex" style="white-space: normal;">[[title]]</span>
+        <paper-icon-button id="nextButton" icon="arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
+        <paper-icon-button id="submitButton" icon="cloud-upload" on-tap="submit" raised>{{localize('submit')}}</paper-icon-button>
+      </paper-toolbar>
+      <iron-pages id="form" class="layout horizontal flex start-justified" role="main" selected="[[page]]" attr-for-selected="name"></iron-pages>
+      <paper-toolbar>
+        <paper-icon-button id="prevButton" icon="arrow-back" hidden$="{{!hasPrev}}" on-tap="prev" raised>{{localize('prev')}}</paper-icon-button>
+        <span class="title layout horizontal flex" style="white-space: normal;"></span>
+        <paper-icon-button id="nextButton" icon="arrow-forward" hidden$="{{!hasNext}}" on-tap="next" raised>{{localize('next')}}</paper-icon-button>
+      </paper-toolbar>
+    </div>
+  </template>
+  <script>
     Polymer({
       is: 'eco-json-schema-wizard',
       behaviors: [
@@ -669,5 +669,5 @@ el.error = {
       }
     });
   </script>
-
 </dom-module>
+
