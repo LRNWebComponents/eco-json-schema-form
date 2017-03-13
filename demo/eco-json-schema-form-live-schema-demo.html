@@ -1,4 +1,11 @@
 <link rel="import" href="../../polymer/polymer.html" />
+<link rel="import" href="../../polymer/lib/elements/dom-if.html"/>
+<link rel="import" href="../../polymer/lib/elements/dom-repeat.html"/>
+<link rel="import" href="../../polymer/lib/elements/custom-style.html"/>
+<link rel="import" href="../../polymer/lib/elements/dom-module.html"/>
+<link rel="import" href="../../polymer/lib/elements/dom-bind.html"/>
+<link rel="import" href="../../polymer/lib/elements/array-selector.html"/>
+
 <link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html" />
 
 <script src="../../ace-builds/src/ace.js"></script>
@@ -12,7 +19,13 @@
 
   <link rel="import" href="../eco-json-schema-wizard.html" />
 
-  <style is="custom-style" include="iron-flex iron-flex-alignment">
+  <template>
+
+  <custom-style include="iron-flex iron-flex-alignment">
+    <style>
+    :host > div {
+      display: flex;
+    }
     paper-material {
       background: #ffffff;
       height: 100%;
@@ -36,7 +49,7 @@
       height: 93%;
     }
   </style>
-  <template>
+</custom-style>
     <div class="horizontal layout main-container">
       <paper-material class="flex-2 editor-container">
         <h3>Schema Editor</h3>
