@@ -1,5 +1,5 @@
 <link rel="import" href="../polymer/polymer.html" />
-<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html" />
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
 <!--
@@ -33,8 +33,7 @@ Please see the `eco-json-schema-object` documentation for further information.
 	<link rel="import" href="../google-map/google-map-marker.html">
 
 	<template>
-		<custom-style include="iron-flex iron-flex-alignment">
-		<style>
+		<style is="custom-style" include="iron-flex-layout">
 			:host {
 				display: block;
 				overflow: hidden
