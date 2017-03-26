@@ -27,7 +27,7 @@
     "paper-icon-button": "2.0-preview",
     "paper-input": "2.0-preview",
     "paper-item": "2.0-preview",
-    "paper-menu": "v1.2.2",
+    "paper-listbox": "2.0-preview",    
     "app-localize-behavior": "^0.10.0",
     "polymer": "^2.0.0-rc.2",
     "webcomponentsjs": "^1.0.0-rc.5",
