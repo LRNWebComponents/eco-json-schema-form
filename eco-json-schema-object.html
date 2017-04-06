@@ -320,6 +320,12 @@ el.error = {
             return {};
           }
         },
+				_componentLookup: {
+					type: Object,
+					value: function() {
+						return {}
+					}
+				},
         schema: {
           type: Object,
           observer: '_schemaChanged'
@@ -330,6 +336,7 @@ el.error = {
         value: {
           type: Object,
           notify: true,
+					observer: "setValue",
           value: function() { return {}; }
         },
         error: {
@@ -344,9 +351,22 @@ el.error = {
       ready: function() {
 
       },
+
       detached: function () {
         this._clearForm();
       },
+			setValue: function(value) {
+				if(!value) return;
+				this.set('value',value);
+				this.updateFormFromValue();
+			},
+			updateFormFromValue: function() {
+				for(var propertyName in this.value) {
+					var propertyValue = this.value[propertyName];
+					var component = this._componentLookup[propertyName];
+					component.value = propertyValue;
+				}
+			},
       _buildSchemaProperties: function() {
         var ctx = this;
 
@@ -477,10 +497,9 @@ el.error = {
             language: this.language,
             resources: this.resources
           });
-
+					ctx._componentLookup[property.property] = el;
           el.setAttribute('name', property.property);
           el.className = 'flex start-justified';
-
           property.value = el[property.component.valueProperty];
           ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
           Polymer.dom(ctx.$.form).appendChild(el);
