@@ -32,10 +32,10 @@
       }
     </style>
 
-    <paper-dropdown-menu id="dropdown" class="layout horizontal vertical" value="{{value}}" required>
+    <paper-dropdown-menu id="dropdown" class="layout horizontal vertical"  required>
       <paper-listbox id="list" class="dropdown-content" attr-for-selected="value" selected="{{value}}">
         <template is="dom-repeat" items="[[_items]]">
-          <paper-item class="flex" label="[[item.label]]" value="[[item.value]]">[[item.label]]</paper-item>
+          <paper-item class="flex" value="[[item.value]]">[[item.label]]</paper-item>
         </template>
       </paper-listbox>
     </paper-dropdown-menu>

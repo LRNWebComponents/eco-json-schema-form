@@ -320,12 +320,12 @@ el.error = {
             return {};
           }
         },
-				_componentLookup: {
-					type: Object,
-					value: function() {
-						return {}
-					}
-				},
+        _componentLookup: {
+          type: Object,
+          value: function () {
+            return {}
+          }
+        },
         schema: {
           type: Object,
           observer: '_schemaChanged'
@@ -355,18 +355,22 @@ el.error = {
       detached: function () {
         this._clearForm();
       },
-			setValue: function(value) {
-				if(!value) return;
-				this.set('value',value);
-				this.updateFormFromValue();
-			},
-			updateFormFromValue: function() {
-				for(var propertyName in this.value) {
-					var propertyValue = this.value[propertyName];
-					var component = this._componentLookup[propertyName];
-					component.value = propertyValue;
-				}
-			},
+
+      setValue: function (value) {
+        if (!value) return;
+        this.set('value', value);
+        this.updateFormFromValue();
+      },
+      updateFormFromValue: function () {
+        for (var propertyName in this.value) {
+          var propertyValue = this.value[propertyName];
+          var component = this._componentLookup[propertyName];
+          if (component) {
+            component.value = propertyValue;
+          }
+        }
+      },
+
       _buildSchemaProperties: function() {
         var ctx = this;
 
