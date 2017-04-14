@@ -33,7 +33,7 @@
     </style>
 
     <paper-dropdown-menu id="dropdown" class="layout horizontal vertical" value="{{value}}" required>
-      <paper-listbox id="list" class="dropdown-content" attr-for-selected="value" selected="{{value}}">
+      <paper-listbox id="list" slot="dropdown-content" attr-for-selected="value" selected="{{value}}">
         <template is="dom-repeat" items="[[_items]]">
           <paper-item class="flex" label="[[item.label]]" value="[[item.value]]">[[item.label]]</paper-item>
         </template>
