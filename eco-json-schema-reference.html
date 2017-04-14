@@ -87,7 +87,7 @@
         window.fetch(schema['x-referenceUri']).then((response)=> {
           console.log(response);
           response.json().then((r)=>{
-            this._items = r.Results.map( (e) => {
+            this._items = r.map( (e) => {
               return {
                  label: e[schema['x-labelAttr']],
                  value: e[schema['x-valueAttr']]
@@ -95,7 +95,7 @@
               });
             });
           });
-        
+
         //this._items = schema.reference.filter(function(item) {
         //  return item !== null;
         //});
