@@ -29,7 +29,6 @@ Please see the `eco-json-schema-object` documentation for further information.
 
         --paper-input-container-label: {
           white-space: normal;
-          position: static;
           font-size: 22px;
           color: #212121;
         }
@@ -39,7 +38,8 @@ Please see the `eco-json-schema-object` documentation for further information.
     <paper-input id="input"
                  class="flex"
                  value="{{value}}"
-                 auto-validate>
+                 auto-validate
+                 label="[[label]]">
 
     </paper-input>
 

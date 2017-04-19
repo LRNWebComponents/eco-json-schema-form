@@ -31,7 +31,7 @@
         }
       }
     </style>
-    <paper-dropdown-menu id="dropdown" class="layout horizontal vertical" required>
+    <paper-dropdown-menu id="dropdown" class="layout horizontal vertical" label="[[label]]" required>
       <paper-listbox id="list" slot="dropdown-content" attr-for-selected="value" selected="{{listboxval}}">
         <template is="dom-repeat" items="[[_items]]">
           <paper-item class="flex"  value="[[item.value]]">[[item.label]]</paper-item>
@@ -48,9 +48,9 @@
         return 'eco-json-schema-reference';
       }
 
-      static get behaviors() {
+     /* static get behaviors() {
         return [Polymer.AppLocalizeBehavior]
-      }
+      }*/
 
       static get properties() {
         return {
