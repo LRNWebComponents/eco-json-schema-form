@@ -518,7 +518,7 @@ el.error = {
         this._schemaProperties.forEach(function (property) {
           var el = document.createElement(property.component.name);
           el.label = property.label;
-          //el.schema = property.schema;
+          el.schema = property.schema;
           el.schemaProperty = property;
           el.language = ctx.language;
           el.resources = ctx.resources;

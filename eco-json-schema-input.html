@@ -23,23 +23,12 @@ Please see the `eco-json-schema-object` documentation for further information.
   <link rel="import" href="../paper-styles/typography.html"/>
 
   <template>
-    <style include="iron-flex-layout">
-      paper-input {
-        padding: 2px;
-
-        --paper-input-container-label: {
-          white-space: normal;
-          font-size: 22px;
-          color: #212121;
-        }
-      }
-    </style>
 
     <paper-input id="input"
                  class="flex"
                  value="{{value}}"
                  auto-validate
-                 label="[[label]]">
+                 label="[[label]]" >
 
     </paper-input>
 
@@ -152,6 +141,7 @@ Please see the `eco-json-schema-object` documentation for further information.
           if (schema.pattern) {
             inputEl.pattern = schema.pattern;
           }
+
         }
 
         if (schema.component && schema.component.properties) {
@@ -160,7 +150,8 @@ Please see the `eco-json-schema-object` documentation for further information.
           });
         }
 
-        inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
+        // Ravi S commenting out as we do not need label to float by default
+        //inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
 
         if (schema.title) {
           inputEl.label = schema.title;
