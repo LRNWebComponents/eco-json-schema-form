@@ -23,68 +23,58 @@ Please see the `eco-json-schema-object` documentation for further information.
   <link rel="import" href="../paper-styles/typography.html"/>
 
   <template>
-    <style include="iron-flex-layout">
-      paper-input {
-        padding: 2px;
-
-        --paper-input-container-label: {
-          white-space: normal;
-          position: static;
-          font-size: 22px;
-          color: #212121;
-        }
-      }
-    </style>
 
     <paper-input id="input"
                  class="flex"
                  value="{{value}}"
-                 auto-validate>
+                 auto-validate
+                 label="[[label]]" >
 
     </paper-input>
 
   </template>
 
   <script>
-    Polymer({
-      is: 'eco-json-schema-input',
-      behaviors: [
-        Polymer.AppLocalizeBehavior
-      ],
 
-      properties: {
-        language: {
-          value: 'en'
-        },
-        resources: {
-          value: function() {
-            return {};
+    class EcoJsonSchemaInput extends Polymer.Element {
+      static get is() {
+        return 'eco-json-schema-input';
+      }
+
+      static get behaviors() {
+        return [Polymer.AppLocalizeBehavior]
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: 'en'
+          },
+          resources: {
+            value: function () {
+              return {};
+            }
+          },
+          schema: {
+            type: Object,
+            observer: '_schemaChanged'
+          },
+          value: {
+            type: String,
+            notify: true,
+            value: function () {
+              return '';
+            }
+          },
+          error: {
+            type: String,
+            observer: '_errorChanged',
+            value: null
           }
-        },
-        schema: {
-          type: Object,
-          observer: '_schemaChanged'
-        },
-        value: {
-          type: String,
-          notify: true,
-          value: function () {
-            return '';
-          }
-        },
-        error: {
-          type: String,
-          observer: '_errorChanged',
-          value: null
         }
-      },
-      ready: function () {
+      }
 
-      },
-      detached: function () {
-
-      },
-      _schemaChanged: function () {
+      _schemaChanged() {
         var schema = this.schema;
         var inputEl = this.$.input;
         if (schema.required) {
@@ -135,9 +125,9 @@ Please see the `eco-json-schema-object` documentation for further information.
           }
 
           /*
-            if (schema.maxLength || schema.minLength) {
-              inputEl.charCounter = true;
-            }
+           if (schema.maxLength || schema.minLength) {
+           inputEl.charCounter = true;
+           }
            */
 
           if (schema.maxLength) {
@@ -151,21 +141,24 @@ Please see the `eco-json-schema-object` documentation for further information.
           if (schema.pattern) {
             inputEl.pattern = schema.pattern;
           }
+
         }
 
         if (schema.component && schema.component.properties) {
-          Object.keys(schema.component.properties).forEach(function(prop) {
+          Object.keys(schema.component.properties).forEach(function (prop) {
             inputEl[prop] = schema.component.properties[prop];
           });
         }
 
-        inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
+        // Ravi S commenting out as we do not need label to float by default
+        //inputEl.alwaysFloatLabel = true; // label doesn't float when value not set
 
         if (schema.title) {
           inputEl.label = schema.title;
         }
-      },
-      _errorChanged: function() {
+      }
+
+      _errorChanged() {
         if (this.error) {
           this.$.input.errorMessage = this.error;
           this.$.input.invalid = true;
@@ -173,38 +166,47 @@ Please see the `eco-json-schema-object` documentation for further information.
           this.$.input.invalid = false;
           this.$.input.errorMessage = null;
         }
-      },
-      _isSchemaValue: function (type) {
+      }
+
+      _isSchemaValue(type) {
         return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type);
-      },
-      _isSchemaBoolean: function (type) {
+      }
+
+      _isSchemaBoolean(type) {
         if (Array.isArray(type)) {
           return type.indexOf('boolean') !== -1;
         } else {
           return type === 'boolean';
         }
-      },
-      _isSchemaNumber: function(type) {
+      }
+
+      _isSchemaNumber(type) {
         if (Array.isArray(type)) {
           return type.indexOf('number') !== -1 || type.indexOf('integer') !== -1;
         } else {
           return type === 'number' || type === 'integer';
         }
-      },
-      _isSchemaString: function (type) {
+      }
+
+      _isSchemaString(type) {
         if (Array.isArray(type)) {
           return type.indexOf('string') !== -1;
         } else {
           return type === 'string';
         }
-      },
-      _isSchemaObject: function (type) {
+      }
+
+      _isSchemaObject(type) {
         return type === 'object';
-      },
-      _isSchemaArray: function (type) {
+      }
+
+      _isSchemaArray(type) {
         return type === 'array';
       }
-    });
+
+    }
+    window.customElements.define(EcoJsonSchemaInput.is, EcoJsonSchemaInput);
+
   </script>
 
 </dom-module>

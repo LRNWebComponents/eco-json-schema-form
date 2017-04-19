@@ -278,89 +278,106 @@ el.error = {
 
 <dom-module id="eco-json-schema-object">
 
-	<link rel="import" href="./eco-json-schema-array.html" />
-	<link rel="import" href="./eco-json-schema-boolean.html" />
-	<link rel="import" href="./eco-json-schema-enum.html" />
-	<link rel="import" href="./eco-json-schema-file.html" />
-	<link rel="import" href="./eco-json-schema-geolocation.html" />
-	<link rel="import" href="./eco-json-schema-input.html" />
+  <!--<link rel="import" href="./eco-json-schema-array.html" />
+    <link rel="import" href="./eco-json-schema-boolean.html" />
+    <link rel="import" href="./eco-json-schema-enum.html" />
+    <link rel="import" href="./eco-json-schema-file.html" />
+    <link rel="import" href="./eco-json-schema-geolocation.html" />-->
+  <link rel="import" href="./eco-json-schema-input.html" />
+  <link rel="import" href="./eco-json-schema-reference.html" />
 
-	<template>
+  <template>
 
-		<style include="iron-flex-layout">
-			#form {
-				display: block;
-				@apply --layout-vertical;
-				@apply --layout-wrap;
-			}
-		</style>
-
-		<template is="dom-if" if={{!wizard}}>
-			<div class="header" hidden$="[[!label]]">[[label]]</div>
-		</template>
-		<div class="layout vertical flex start-justified">
-			<div id="form" class="layout horizontal flex start-justified"></div>
-		</div>
+    <style include="iron-flex-layout">
+      #form {
+        display: block;
+        @apply --layout-vertical;
+        @apply --layout-wrap;
+      }
+    </style>
 
 
-	</template>
 
-	<script>
-    Polymer({
-      is: 'eco-json-schema-object',
-      behaviors: [
-        Polymer.AppLocalizeBehavior
-      ],
-      properties: {
-        language: {
-          value: 'en'
-        },
-        resources: {
-          value: function() {
-            return {};
+    <template is="dom-if" if={{!wizard}}>
+      <div class="header" hidden$="[[!label]]">[[label]]</div>
+    </template>
+    <div class="layout vertical flex start-justified">
+      <div id="form" class="layout horizontal flex start-justified"></div>
+    </div>
+
+  </template>
+
+  <script>
+
+    class EcoJsonSchemaObject extends Polymer.Element {
+      static get is() {
+        return 'eco-json-schema-object';
+      }
+
+      static get behaviors() {
+        return [Polymer.AppLocalizeBehavior]
+      }
+
+      static get properties() {
+        return {
+          language: {
+            value: 'en'
+          },
+          resources: {
+            value: function () {
+              return {};
+            }
+          },
+          _componentLookup: {
+            type: Object,
+            value: function () {
+              return {}
+            }
+          },
+          schema: {
+            type: Object,
+            observer: '_schemaChanged'
+          },
+          label: {
+            type: String
+          },
+          value: {
+            type: Object,
+            notify: true,
+            observer: "setValue",
+            value: function () {
+              return {};
+            }
+          },
+          error: {
+            type: Object,
+            observer: '_errorChanged'
+          },
+          wizard: {
+            type: Boolean,
+            notify: true
           }
-        },
-        _componentLookup: {
-          type: Object,
-          value: function () {
-            return {}
-          }
-        },
-        schema: {
-          type: Object,
-          observer: '_schemaChanged'
-        },
-        label: {
-          type: String
-        },
-        value: {
-          type: Object,
-          notify: true,
-					observer: "setValue",
-          value: function() { return {}; }
-        },
-        error: {
-          type: Object,
-          observer: '_errorChanged'
-        },
-        wizard: {
-          type: Boolean,
-          notify: true
-        },
-      },
-      ready: function() {
 
-      },
+        }
+      }
 
-      detached: function () {
+      connectedCallback () {
+        super.connectedCallback();
+        console.log("connected callback");
+      }
+
+      disconnectedCallback () {
+        super.disconnectedCallback();
         this._clearForm();
-      },
-      setValue: function (value) {
+      }
+
+      setValue(value) {
         if (!value) return;
         this.set('value', value);
         this.updateFormFromValue();
-      },
-      updateFormFromValue: function () {
+      }
+
+      updateFormFromValue() {
         for (var propertyName in this.value) {
           var propertyValue = this.value[propertyName];
           var component = this._componentLookup[propertyName];
@@ -368,11 +385,12 @@ el.error = {
             component.value = propertyValue;
           }
         }
-      },
-      _buildSchemaProperties: function() {
+      }
+
+      _buildSchemaProperties() {
         var ctx = this;
 
-        this._schemaProperties = Object.keys(this.schema.properties || []).map(function(key) {
+        this._schemaProperties = Object.keys(this.schema.properties || []).map(function (key) {
           var schema = ctx.schema.properties[key];
           var property = {
             property: key,
@@ -388,14 +406,14 @@ el.error = {
           if (ctx._isSchemaEnum(schema)) {
             property.component.name = property.component.name || 'eco-json-schema-enum';
             property.value = '';
-					} else if (ctx._isSchemaReference(schema)) {
+          } else if (ctx._isSchemaReference(schema)) {
             property.component.name = property.component.name || 'eco-json-schema-reference';
             property.value = false;
           } else if (ctx._isSchemaGeo(schema.type)) {
             property.component.name = property.component.name || 'eco-json-schema-geolocation';
             property.value = {};
             property.map = true;
-            if (schema.zoom !== undefined){
+            if (schema.zoom !== undefined) {
               property.zoom = schema.zoom;
             }
           } else if (ctx._isSchemaBoolean(schema.type)) {
@@ -419,10 +437,12 @@ el.error = {
 
           return property;
         });
-      },
-      _schemaPropertyChanged: function (event, detail) {
+      }
 
-        if (detail.path && /\.length$/.test(detail.path)) {
+      _schemaPropertyChanged(event, detail) {
+
+        //TODO: figure out how to fix or create detail. Currently none of the detail blocks are executed ???
+        if (detail && detail.path && /\.length$/.test(detail.path)) {
           return;
         }
 
@@ -430,7 +450,7 @@ el.error = {
         var property = event.target.schemaProperty;
         var path = ['value', property.property];
 
-        if (detail.path && /\.splices$/.test(detail.path)) {
+        if (detail && detail.path && /\.splices$/.test(detail.path)) {
           var parts = detail.path.split('.').slice(1, -1);
           while (parts.length) {
             path.push(parts.shift());
@@ -441,7 +461,7 @@ el.error = {
 
           if (detail.value.keySplices) {
             if (property.keyMap) {
-              detail.value.keySplices.forEach(function(splice) {
+              detail.value.keySplices.forEach(function (splice) {
                 splice.removed.forEach(function (k) {
                   delete property.keyMap[path.concat([k]).join('.')];
                 });
@@ -450,7 +470,7 @@ el.error = {
           }
 
           if (detail.value) {
-            detail.value.indexSplices.forEach(function(splice) {
+            detail.value.indexSplices.forEach(function (splice) {
               var args = [path.join('.'), splice.index, splice.removed.length];
               if (splice.addedCount) {
                 for (var i = 0, ii = splice.addedCount; i < ii; i++) {
@@ -464,11 +484,11 @@ el.error = {
               ctx.splice.apply(ctx, args);
             });
           }
-        } else if (detail.path) {
+        } else if (detail && detail.path) {
           var parts = detail.path.split('.').slice(1);
           var v = this.value;
-          if(!v.hasOwnProperty(property.property)) {
-            this.set('value.'+property.property, {})
+          if (!v.hasOwnProperty(property.property)) {
+            this.set('value.' + property.property, {})
           }
           while (parts.length) {
             var k = parts.shift();
@@ -479,57 +499,66 @@ el.error = {
           }
           this.set(path.join('.'), this._deepClone(detail.value));
         } else {
-          property.value = detail.value;
-          this.set(path, this._deepClone(detail.value));
+          property.value = event.detail.value;
+          this.set(path, this._deepClone(event.detail.value));
         }
-      },
-      _setValue: function() {
+      }
+
+      _setValue() {
         var ctx = this;
         var value = {};
         this._schemaProperties.forEach(function (property) {
           value[property.property] = ctx._deepClone(property.value);
         });
         this.value = value;
-      },
-      _buildForm: function() {
-        var ctx = this;
-        this._schemaProperties.forEach(function(property) {
+      }
 
-          var el = ctx.create(property.component.name, {
-            label: property.label,
-            schema: property.schema,
-            schemaProperty: property,
-            language: this.language,
-            resources: this.resources
-          });
-					ctx._componentLookup[property.property] = el;
+      _buildForm() {
+        var ctx = this;
+        this._schemaProperties.forEach(function (property) {
+          var el = document.createElement(property.component.name);
+          el.label = property.label;
+          el.schema = property.schema;
+          el.schemaProperty = property;
+          el.language = ctx.language;
+          el.resources = ctx.resources;
+
+          ctx._componentLookup[property.property] = el;
           el.setAttribute('name', property.property);
           el.className = 'flex start-justified';
           property.value = el[property.component.valueProperty];
-          ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
-          Polymer.dom(ctx.$.form).appendChild(el);
+          el.addEventListener(property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', ctx._schemaPropertyChanged.bind(ctx));
+          //ctx.listen(el, property.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
+          ctx.$.form.appendChild(el);
         });
-      },
-      _removePropertyEl: function (el) {
-        this.unlisten(el, el.schemaProperty.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
-        el.schemaProperty = null;
+      }
+
+      _removePropertyEl(el) {
+        if (el.schemaProperty) {
+          //this.unlisten(el, el.schemaProperty.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaPropertyChanged');
+          el.removeEventListener(el.schemaProperty.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', this._schemaPropertyChanged);
+          el.schemaProperty = null;
+        }
         Polymer.dom(this.$.form).removeChild(el);
-      },
-      _clearForm: function () {
+      }
+
+      _clearForm() {
         var formEl = Polymer.dom(this.$.form);
         while (formEl.firstChild) {
           this._removePropertyEl(formEl.firstChild);
         }
-      },
-      _schemaChanged: function() {
+      }
+
+      _schemaChanged() {
         this._clearForm();
         this._buildSchemaProperties();
         this._buildForm();
         this._setValue();
-      },
-      _errorChanged: function() {
+      }
+
+      _errorChanged() {
         var ctx = this;
-        Polymer.dom(this.$.form).childNodes.forEach(function(el) {
+        Polymer.dom(this.$.form).childNodes.forEach(function (el) {
           var name = el.getAttribute('name');
           if (ctx.error && ctx.error[name]) {
             el.error = ctx.error[name];
@@ -537,57 +566,70 @@ el.error = {
             el.error = null;
           }
         });
-      },
-      _deepClone: function(o) {
+      }
+
+      _deepClone(o) {
         return JSON.parse(JSON.stringify(o));
-      },
-      _isSchemaValue: function(type) {
+      }
+
+      _isSchemaValue(type) {
         return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type) || this._isSchemaFile(type);
-      },
-      _isSchemaFile: function(type) {
+      }
+
+      _isSchemaFile(type) {
         if (Array.isArray(type)) {
           return type.indexOf('file') !== -1;
         } else {
           return type === 'file';
         }
-      },
-      _isSchemaBoolean: function (type) {
+      }
+
+      _isSchemaBoolean(type) {
         if (Array.isArray(type)) {
           return type.indexOf('boolean') !== -1;
         } else {
           return type === 'boolean';
         }
-      },
-      _isSchemaEnum: function (schema) {
+      }
+
+      _isSchemaEnum(schema) {
         return !!schema.enum;
-      },
-			_isSchemaReference: function (schema) {
+      }
+
+      _isSchemaReference(schema) {
         return !!schema['x-reference'];
-      },
-      _isSchemaNumber: function (type) {
+      }
+
+      _isSchemaNumber(type) {
         if (Array.isArray(type)) {
           return type.indexOf('number') !== -1 || type.indexOf('integer') !== -1;
         } else {
           return type === 'number' || type === 'integer';
         }
-      },
-      _isSchemaString: function (type) {
+      }
+
+      _isSchemaString(type) {
         if (Array.isArray(type)) {
           return type.indexOf('string') !== -1;
         } else {
           return type === 'string';
         }
-      },
-      _isSchemaGeo: function (type) {
+      }
+
+      _isSchemaGeo(type) {
         return type === 'geolocation';
-      },
-      _isSchemaObject: function (type) {
+      }
+
+      _isSchemaObject(type) {
         return type === 'object';
-      },
-      _isSchemaArray: function (type) {
+      }
+
+      _isSchemaArray(type) {
         return type === 'array';
       }
-    });
+
+    }
+    window.customElements.define(EcoJsonSchemaObject.is, EcoJsonSchemaObject);
   </script>
 
 </dom-module>

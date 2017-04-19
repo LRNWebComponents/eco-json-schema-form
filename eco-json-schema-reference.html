@@ -31,7 +31,7 @@
         }
       }
     </style>
-    <paper-dropdown-menu id="dropdown" class="layout horizontal vertical" required>
+    <paper-dropdown-menu id="dropdown" class="layout horizontal vertical" label="[[label]]" required>
       <paper-listbox id="list" slot="dropdown-content" attr-for-selected="value" selected="{{listboxval}}">
         <template is="dom-repeat" items="[[_items]]">
           <paper-item class="flex"  value="[[item.value]]">[[item.label]]</paper-item>
@@ -42,64 +42,80 @@
   </template>
 
   <script>
-    Polymer({
-      is: 'eco-json-schema-reference',
-      behaviors: [Polymer.IronValidatableBehavior],
-      properties: {
-        schema: {
-          type: Object,
-          observer: '_schemaChanged'
-        },
-        value: {
-          type: String,
-          notify: true,
-          value: null
-        },
-        listboxval:{
-          type: String,
-          notify: true,
-          value: '',
-          computed: '_computeListBoxValue(value)'
-        },
-        error: {
-          type: String,
-          observer: '_errorChanged',
-          value: null
-        },
-        _items: {
-          type: Object,
-          value: function() {
-            return {};
+
+    class EcoJsonSchemaReference extends Polymer.Element {
+      static get is() {
+        return 'eco-json-schema-reference';
+      }
+
+     /* static get behaviors() {
+        return [Polymer.AppLocalizeBehavior]
+      }*/
+
+      static get properties() {
+        return {
+          schema: {
+            type: Object,
+            observer: '_schemaChanged'
+          },
+          value: {
+            type: String,
+            notify: true,
+            value: null
+          },
+          listboxval: {
+            type: String,
+            notify: true,
+            value: '',
+            computed: '_computeListBoxValue(value)'
+          },
+          error: {
+            type: String,
+            observer: '_errorChanged',
+            value: null
+          },
+          _items: {
+            type: Object,
+            value: function () {
+              return {};
+            }
           }
         }
-      },
-      ready: function () {
-        console.log("Ready in eco-json-reference ");
-        this.listen(this.$.list, 'selected-changed', '_selectedPropertyChanged');
-      },
-      detached: function () {
+      }
 
-      },
+      ready() {
+        super.ready();
+        console.log("Ready in eco-json-reference ");
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        //this.listen(this.$.list, 'selected-changed', '_selectedPropertyChanged');
+        this.$.list.addEventListener('selected-changed', this._selectedPropertyChanged.bind(this));
+
+      }
+
+      disconnectedCallback() {
+        super.connectedCallback();
+      }
 
       /*
        This is needed because backend returns array of selected roles and we are trying to display
        this using a dropdown,which displays one item at a time. Dropdown has to change to some other
        comp. setting the first value as currently we can only "admin" or "read_only"
        */
-      _computeListBoxValue: function(value){
-        if(!value || value.length <=0 ){
+      _computeListBoxValue(value) {
+        if (!value || value.length <= 0) {
           return;
         }
         return value[0];
 
-      },
+      }
+      _selectedPropertyChanged(val1, val2) {
+        this.value = [val1.detail.value];
 
-      _selectedPropertyChanged: function(val1,val2) {
-        this.value = [val2.value];
-
-      },
-
-      _schemaChanged: function () {
+      }
+      _schemaChanged() {
         var schema = this.schema;
         var inputEl = this.$.dropdown;
 
@@ -112,7 +128,7 @@
         window.fetch(schema['x-referenceUri']).then((response)=> {
           console.log(response);
         response.json().then((r)=>{
-          if(schema['x-referenceDataPath']) {
+          if(schema['x-referenceDataPath'] && r[schema['x-referenceDataPath']])  {
           r = r[schema['x-referenceDataPath']];
         }
         this._items = r.map( (e) => {
@@ -131,45 +147,48 @@
         if (schema.title) {
           inputEl.label = schema.title;
         }
-      },
-      _errorChanged: function () {
+      }
+      _errorChanged() {
         if (this.error) {
           this.$.dropdown.invalid = true;
         } else {
           this.$.dropdown.invalid = false;
         }
-      },
-      _isSchemaValue: function (type) {
+      }
+      _isSchemaValue(type) {
         return this._isSchemaBoolean(type) || this._isSchemaNumber(type) || this._isSchemaString(type);
-      },
-      _isSchemaBoolean: function (type) {
+      }
+      _isSchemaBoolean(type) {
         if (Array.isArray(type)) {
           return type.indexOf('boolean') !== -1;
         } else {
           return type === 'boolean';
         }
-      },
-      _isSchemaNumber: function(type) {
+      }
+      _isSchemaNumber(type) {
         if (Array.isArray(type)) {
           return type.indexOf('number') !== -1 || type.indexOf('integer') !== -1;
         } else {
           return type === 'number' || type === 'integer';
         }
-      },
-      _isSchemaString: function (type) {
+      }
+      _isSchemaString(type) {
         if (Array.isArray(type)) {
           return type.indexOf('string') !== -1;
         } else {
           return type === 'string';
         }
-      },
-      _isSchemaObject: function (type) {
+      }
+      _isSchemaObject(type) {
         return type === 'object';
-      },
-      _isSchemaArray: function (type) {
+      }
+      _isSchemaArray(type) {
         return type === 'array';
       }
-    });
+    }
+
+    window.customElements.define(EcoJsonSchemaReference.is, EcoJsonSchemaReference);
+
   </script>
 
 </dom-module>
