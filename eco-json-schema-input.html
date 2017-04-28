@@ -24,7 +24,14 @@ Please see the `eco-json-schema-object` documentation for further information.
 
   <template>
 
-    <paper-input id="input"
+    <style>
+
+      paper-input{ --paper-input-container:{width:300px;}; }
+
+
+    </style>
+
+    <paper-input class="Eco-Json-input" id="input"
                  class="flex"
                  value="{{value}}"
                  auto-validate
