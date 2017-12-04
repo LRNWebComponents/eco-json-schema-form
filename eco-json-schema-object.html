@@ -480,7 +480,9 @@ el.error = {
         var ctx = this;
         var value = {};
         this._schemaProperties.forEach(function (property) {
-          value[property.property] = ctx._deepClone(property.value);
+          if (typeof property.value !== typeof undefined) {
+            value[property.property] = ctx._deepClone(property.value);
+          }
         });
         this.value = value;
       },
