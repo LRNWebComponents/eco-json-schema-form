@@ -80,7 +80,8 @@ Please see the `eco-json-schema-object` documentation for further information.
         value: {
           type: Array,
           notify: true,
-          value: function() { return []; }
+          value: function() { return []; },
+          observer: '_valueChanged',
         },
         error: {
           type: Object,
@@ -95,6 +96,16 @@ Please see the `eco-json-schema-object` documentation for further information.
       observers: [
         '_schemaArraySplicesChanged(_schemaArrayItems.splices)'
       ],
+      _valueChanged: function(newValue, oldValue) {
+        if (typeof newValue !== typeof undefined) {
+          this._buildSchemaArrayItems();
+          // wipe schema array and go from there
+          // this only fires when the element initially builds
+          for (var i in newValue) {
+            this._onAddItemWithValue(newValue[i]);
+          }
+        }
+      },
       ready: function() {
 
       },
@@ -228,6 +239,47 @@ Please see the `eco-json-schema-object` documentation for further information.
           }
         });
       },
+      _onAddItemWithValue: function(value) {
+        var schema = this.schema.items;
+        console.log(schema);
+        console.log(value);
+        // try to set values if we have them
+        if (typeof value !== typeof undefined) {
+          for (var i in value) {
+            schema.properties[i].value = value[i];
+          }
+        }
+        console.log(schema);
+        var item = {
+          label: schema.title,
+          schema: schema,
+          component: schema.component || {}
+        };
+
+        if (!item.component.valueProperty) {
+          item.component.valueProperty = 'value';
+        }
+
+        if (!item.component.name) {
+          if (this._isSchemaEnum(schema)) {
+            item.component.name = 'eco-json-schema-enum';
+          } else if (this._isSchemaBoolean(schema.type)) {
+            item.component.name = 'eco-json-schema-boolean';
+          } else if (this._isSchemaFile(schema.type)) {
+            item.component.name = 'eco-json-schema-file';
+          } else if (this._isSchemaValue(schema.type)) {
+            item.component.name = 'eco-json-schema-input';
+          } else if (this._isSchemaObject(schema.type)) {
+            item.component.name = 'eco-json-schema-object';
+          } else if (this._isSchemaArray(schema.type)) {
+            item.component.name = 'eco-json-schema-array';
+          } else {
+            return console.error('Unknown item type %s', schema.type);
+          }
+        }
+        console.log(this._schemaArrayItems);
+        this.push('_schemaArrayItems', item);
+      },
       _onAddItem: function() {
         var schema = this.schema.items;
         var item = {
@@ -257,7 +309,6 @@ Please see the `eco-json-schema-object` documentation for further information.
             return console.error('Unknown item type %s', schema.type);
           }
         }
-
         this.push('_schemaArrayItems', item);
       },
       _onRemoveItem: function(e) {
