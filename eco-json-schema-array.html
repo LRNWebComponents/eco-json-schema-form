@@ -15,7 +15,11 @@ Please see the `eco-json-schema-object` documentation for further information.
 <dom-module id="eco-json-schema-array">
 
   <link rel="import" href="../iron-icons/iron-icons.html"/>
+  <link rel="import" href="../iron-icons/editor-icons.html"/>
   <link rel="import" href="../paper-icon-button/paper-icon-button.html"/>
+  <link rel="import" href="../paper-tooltip/paper-tooltip.html"/>
+  <link rel="import" href="../paper-collapse-item/paper-collapse-item.html"/>
+  <link rel="import" href="../paper-collapse-item/paper-collapse-group.html"/>
   <link rel="import" href="../app-localize-behavior/app-localize-behavior.html">
 
   <link rel="import" href="./eco-json-schema-boolean.html"/>
@@ -35,6 +39,42 @@ Please see the `eco-json-schema-object` documentation for further information.
           font-size: 22px;
           color: #212121;
         }
+      }
+      paper-collapse-item {
+        --paper-collapse-item-header: {
+          font-weight:bold;
+          padding: 8px 0 0 8px;
+        };
+      }
+      #form {
+        border: 1px solid #AAAAAA;
+      }
+      #form div:nth-child(odd) {
+        background-color: #F2F2F2;
+        padding: 4px;
+      }
+      #form div:nth-child(even) {
+        background-color: #E2E2E2;
+        border-top: 1px solid #AAAAAA;
+        border-bottom: 1px solid #AAAAAA;
+        padding: 4px;
+      }
+      #form div:focus,
+      #form div:hover,
+      #form div:active {
+        background-color: #FFFFFF !important;
+      }
+      paper-icon-button {
+        float: right;
+        border-radius: 50%;
+      }
+      .array-add {
+        color: #34e79a;
+        background-color: #f8f8f8;
+      }
+      .array-remove-element {
+        color: #f44336;
+        background-color: #f8f8f8;
       }
 
       .label {
@@ -59,10 +99,12 @@ Please see the `eco-json-schema-object` documentation for further information.
     </style>
 
     <div class="horizontal layout">
-      <div class="flex" hidden$="[[!label]]">[[label]]</div><paper-icon-button icon="add" on-click="_onAddItem"></paper-icon-button>
+      <div class="flex" hidden$="[[!label]]">[[label]]</div>
+      <paper-icon-button id="addarray" class="array-add" icon="add" on-click="_onAddItem"></paper-icon-button>
+      <paper-tooltip for="addarray">add</paper-tooltip>
     </div>
 
-    <div id="form" class="vertical flex layout"></div>
+    <paper-collapse-group id="form" class="vertical flex layout"></paper-collapse-group>
 
   </template>
 
@@ -96,13 +138,19 @@ Please see the `eco-json-schema-object` documentation for further information.
       observers: [
         '_schemaArraySplicesChanged(_schemaArrayItems.splices)'
       ],
+      /**
+       * Notice values have changed and rebuild the form
+       * to match (potentially).
+       */
       _valueChanged: function(newValue, oldValue) {
-        if (typeof newValue !== typeof undefined) {
+        if (newValue !== oldValue && typeof newValue !== typeof undefined && typeof this.schema !== typeof undefined) {
           this._buildSchemaArrayItems();
           // wipe schema array and go from there
           // this only fires when the element initially builds
           for (var i in newValue) {
-            this._onAddItemWithValue(newValue[i]);
+            setTimeout( () => {
+              this._onAddItemWithValue(newValue[i]);
+            }, 200);
           }
         }
       },
@@ -116,9 +164,11 @@ Please see the `eco-json-schema-object` documentation for further information.
         this._schemaArrayItems = [];
       },
       _setValue: function() {
+        // @todo maybe look in schema here for existing values?
         this.value = this._schemaArrayItems.map(function(item) {
           return item.value;
         });
+        console.log(this.value);
       },
       _schemaArraySplicesChanged: function(detail) {
 
@@ -150,16 +200,17 @@ Please see the `eco-json-schema-object` documentation for further information.
                 schema: item.schema,
                 schemaArrayItem: item
               });
-
-              var containerEl = ctx.create('div');
+              var containerEl = ctx.create('paper-collapse-item', {header: 'Item ' + (i+1)});
               var buttonEl = ctx.create('paper-icon-button', {icon: 'remove'});
-
+              var tipEl = ctx.create('paper-tooltip');
+              Polymer.dom(tipEl).appendChild(document.createTextNode('remove'));
               ctx.listen(buttonEl, 'tap', '_onRemoveItem');
-
+              buttonEl.classList.add('array-remove-element');
               componentEl.classList.add('flex', 'horizontal', 'layout');
 
               Polymer.dom(containerEl).appendChild(componentEl);
               Polymer.dom(containerEl).appendChild(buttonEl);
+              Polymer.dom(containerEl).appendChild(tipEl);
 
               var beforeEl = ctx.$.form.children[i];
 
@@ -170,7 +221,6 @@ Please see the `eco-json-schema-object` documentation for further information.
               }
 
               ctx.listen(componentEl, item.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaArrayItemChanged');
-
               args.push(ctx._deepClone(componentEl[item.component.valueProperty]));
             }
           }
@@ -178,7 +228,6 @@ Please see the `eco-json-schema-object` documentation for further information.
         });
       },
       _schemaArrayItemChanged: function(event, detail) {
-
         if (detail.path && /\.length$/.test(detail.path)) {
           return;
         }
@@ -226,8 +275,10 @@ Please see the `eco-json-schema-object` documentation for further information.
       },
       _schemaChanged: function() {
         this._clearForm();
-        this._buildSchemaArrayItems();
-        this._setValue();
+        setTimeout( () => {
+          this._buildSchemaArrayItems();
+          this._setValue();
+        }, 500);
       },
       _errorChanged: function() {
         var ctx = this;
@@ -239,17 +290,16 @@ Please see the `eco-json-schema-object` documentation for further information.
           }
         });
       },
-      _onAddItemWithValue: function(value) {
+      _onAddItemWithValue: function(values) {
         var schema = this.schema.items;
-        console.log(schema);
-        console.log(value);
         // try to set values if we have them
-        if (typeof value !== typeof undefined) {
-          for (var i in value) {
-            schema.properties[i].value = value[i];
+        if (typeof values !== typeof undefined) {
+          for (var i in values) {
+            if (typeof schema.properties[i] !== typeof undefined) {
+              schema.properties[i].value = values[i];
+            }
           }
         }
-        console.log(schema);
         var item = {
           label: schema.title,
           schema: schema,
@@ -277,7 +327,6 @@ Please see the `eco-json-schema-object` documentation for further information.
             return console.error('Unknown item type %s', schema.type);
           }
         }
-        console.log(this._schemaArrayItems);
         this.push('_schemaArrayItems', item);
       },
       _onAddItem: function() {
