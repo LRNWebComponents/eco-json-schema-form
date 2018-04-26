@@ -144,14 +144,14 @@ Please see the `eco-json-schema-object` documentation for further information.
        */
       _valueChanged: function(newValue, oldValue) {
         if (newValue !== oldValue && typeof newValue !== typeof undefined && typeof this.schema !== typeof undefined) {
-          this._buildSchemaArrayItems();
-          // wipe schema array and go from there
-          // this only fires when the element initially builds
-          for (var i in newValue) {
-            setTimeout( () => {
-              this._onAddItemWithValue(newValue[i]);
-            }, 200);
-          }
+          setTimeout( () => {
+            this._buildSchemaArrayItems();
+            // wipe schema array and go from there
+            // this only fires when the element initially builds
+            for (var i in newValue) {
+              this._onAddItemWithValue(newValue[i], parseInt(i));
+            }
+          }, 100);
         }
       },
       ready: function() {
@@ -164,11 +164,10 @@ Please see the `eco-json-schema-object` documentation for further information.
         this._schemaArrayItems = [];
       },
       _setValue: function() {
-        // @todo maybe look in schema here for existing values?
+        this.value = [];
         this.value = this._schemaArrayItems.map(function(item) {
           return item.value;
         });
-        console.log(this.value);
       },
       _schemaArraySplicesChanged: function(detail) {
 
@@ -275,10 +274,8 @@ Please see the `eco-json-schema-object` documentation for further information.
       },
       _schemaChanged: function() {
         this._clearForm();
-        setTimeout( () => {
-          this._buildSchemaArrayItems();
-          this._setValue();
-        }, 500);
+        this._buildSchemaArrayItems();
+        this._setValue();
       },
       _errorChanged: function() {
         var ctx = this;
@@ -290,7 +287,7 @@ Please see the `eco-json-schema-object` documentation for further information.
           }
         });
       },
-      _onAddItemWithValue: function(values) {
+      _onAddItemWithValue: function(values, pointer) {
         var schema = this.schema.items;
         // try to set values if we have them
         if (typeof values !== typeof undefined) {
@@ -327,7 +324,32 @@ Please see the `eco-json-schema-object` documentation for further information.
             return console.error('Unknown item type %s', schema.type);
           }
         }
-        this.push('_schemaArrayItems', item);
+        var ctx = this;
+        var componentEl = ctx.create(item.component.name, {
+          label: item.label,
+          schema: item.schema,
+          schemaArrayItem: item
+        });
+        var containerEl = ctx.create('paper-collapse-item', {header: 'Item ' + (pointer+1)});
+        var buttonEl = ctx.create('paper-icon-button', {icon: 'remove'});
+        var tipEl = ctx.create('paper-tooltip');
+        Polymer.dom(tipEl).appendChild(document.createTextNode('remove'));
+        ctx.listen(buttonEl, 'tap', '_onRemoveItem');
+        buttonEl.classList.add('array-remove-element');
+        componentEl.classList.add('flex', 'horizontal', 'layout');
+
+        Polymer.dom(containerEl).appendChild(componentEl);
+        Polymer.dom(containerEl).appendChild(buttonEl);
+        Polymer.dom(containerEl).appendChild(tipEl);
+
+        var beforeEl = ctx.$.form.children[i];
+
+        if (beforeEl) {
+          Polymer.dom(ctx.$.form).insertBefore(containerEl, beforeEl);
+        } else {
+          Polymer.dom(ctx.$.form).appendChild(containerEl);
+        }
+        ctx.listen(componentEl, item.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaArrayItemChanged');
       },
       _onAddItem: function() {
         var schema = this.schema.items;
