@@ -350,6 +350,8 @@ Please see the `eco-json-schema-object` documentation for further information.
           Polymer.dom(ctx.$.form).appendChild(containerEl);
         }
         ctx.listen(componentEl, item.component.valueProperty.replace(/([A-Z])/g, '-$1').toLowerCase() + '-changed', '_schemaArrayItemChanged');
+        // this will add it to the array but not force a splice mutation
+        this._schemaArrayItems.push(item);
       },
       _onAddItem: function() {
         var schema = this.schema.items;
